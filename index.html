@@ -1,16 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <style>html{visibility:hidden;opacity:0;}</style>
+  <noscript><style>html{visibility:visible;opacity:1;}</style></noscript>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="BIZCORE is a professional consulting firm specializing in financial planning, market research, and data analytics." />
   <meta property="og:title" content="BIZCORE Consulting" />
   <meta property="og:description" content="Structured Finance. Sustainable Growth." />
+  <meta property="og:image" content="/src/assets/images/bizcore-logo.svg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="BIZCORE Consulting" />
+  <meta name="twitter:description" content="Structured Finance. Sustainable Growth." />
+  <meta name="twitter:image" content="/src/assets/images/bizcore-logo.svg" />
+  <link rel="canonical" href="https://bizcoreconsulting.com/" />
   <title>BIZCORE Consulting | Structured Finance. Sustainable Growth.</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Outfit:wght@400;500;600&family=DM+Sans:wght@400;500&family=JetBrains+Mono&display=swap" rel="stylesheet" />
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
-
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Outfit:wght@400;500;600&family=DM+Sans:wght@400;500&family=JetBrains+Mono&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Outfit:wght@400;500;600&family=DM+Sans:wght@400;500&family=JetBrains+Mono&display=swap" rel="stylesheet" />
+ 
+<link rel="preload" as="image" href="/src/assets/images/hero/hero-1.svg" fetchpriority="high" />
+<link rel="preload" as="script" href="/src/main.js">
+<script type="module" src="/src/main.js"></script>
 
  
   <style>
@@ -49,6 +62,140 @@
       color: #0D1B2A;
     }
 
+    /* ─── Hero Responsive Height ─── */
+    .hero-min-height {
+      min-height: 100vh;
+      min-height: 100dvh;
+    }
+
+    /* ─── Hero Carousel ─── */
+    #hero-carousel .hero-slides-wrapper {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      width: 300%;
+      animation: slideLoop 30s infinite;
+      z-index: 1;
+    }
+    #hero-carousel .hero-slide {
+      width: 33.333%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      flex-shrink: 0;
+    }
+    @keyframes slideLoop {
+      0%, 33% { transform: translateX(0); }
+      37%, 66% { transform: translateX(-33.333%); }
+      70%, 100% { transform: translateX(-66.666%); }
+    }
+
+    /* ─── Hamburger Menu ─── */
+    .hamburger-btn {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      padding: 6px;
+      gap: 5px;
+      background: transparent;
+      border: none;
+    }
+    @media (max-width: 1023px) {
+      .hamburger-btn { display: flex; }
+    }
+    .hamburger-line {
+      display: block;
+      width: 18px;
+      height: 2px;
+      background: white;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+      transform-origin: center;
+    }
+    .hamburger-btn.is-active .hamburger-line:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+    .hamburger-btn.is-active .hamburger-line:nth-child(2) {
+      opacity: 0;
+      transform: scaleX(0);
+    }
+    .hamburger-btn.is-active .hamburger-line:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+
+    /* ─── Mobile Nav Link Hover ─── */
+    .mobile-nav-link {
+      position: relative;
+    }
+    .mobile-nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      transform: translateX(-50%) scaleX(0);
+      width: 60%;
+      height: 2px;
+      background: #C9A84C;
+      border-radius: 1px;
+      transition: transform 0.25s ease;
+    }
+    .mobile-nav-link:hover::after {
+      transform: translateX(-50%) scaleX(1);
+    }
+
+    /* ─── Process Cards Float ─── */
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    .process-card {
+      animation: float 4s ease-in-out infinite;
+      background: #fff;
+    }
+    .process-card:nth-child(1) { animation-delay: 0s; }
+    .process-card:nth-child(2) { animation-delay: 0.8s; }
+    .process-card:nth-child(3) { animation-delay: 1.6s; }
+    .process-card:nth-child(4) { animation-delay: 2.4s; }
+    .process-card:hover,
+    .process-card:focus-visible {
+      transform: none !important;
+      box-shadow: none !important;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .process-card {
+        animation: none !important;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .section-title {
+        margin-bottom: 0.25rem;
+      }
+    }
+
+    /* ─── Scroll Reveal ─── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+
+    @media (prefers-reduced-motion: reduce) {
+      .testimonials-track {
+        animation: none !important;
+      }
+    }
+
     /* ─── Metrics Marquee ─── */
     @keyframes marquee {
       0% { transform: translateX(0); }
@@ -56,6 +203,14 @@
     }
     .marquee-track:hover {
       animation-play-state: paused !important;
+    }
+    .stat-number {
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 1rem + 2.5vw, 2.5rem);
+      font-weight: 700;
+      color: #C9A84C;
+      line-height: 1;
+      margin-bottom: 0.5rem;
     }
   </style>
 </head>
@@ -80,54 +235,89 @@
   <!-- Navbar -->
   <nav class="fixed top-0 left-0 right-0 z-50 bg-brand-navy/95 backdrop-blur-sm border-b border-white/10">
     <div class="max-w-content mx-auto px-6 h-16 flex items-center justify-between">
-      <a href="index.html" class="font-display text-2xl font-bold text-white tracking-tight">BIZCORE</a>
+      <a href="/" class="inline-block align-middle">
+              <img src="/src/assets/images/bizcore-logo.svg" alt="BIZCORE" class="h-7 w-auto block" />
+            </a>
 
       <div class="hidden lg:flex items-center gap-8">
-        <a href="index.html" class="nav-link text-sm uppercase tracking-wider transition-colors duration-200 pb-1">Home</a>
-        <a href="services.html" class="nav-link text-sm uppercase tracking-wider transition-colors duration-200 pb-1">Services</a>
-        <a href="about.html" class="nav-link text-sm uppercase tracking-wider transition-colors duration-200 pb-1">About</a>
-        <a href="blog.html" class="nav-link text-sm uppercase tracking-wider transition-colors duration-200 pb-1">Blog</a>
-        <a href="contact.html" class="nav-link text-sm uppercase tracking-wider transition-colors duration-200 pb-1">Contact</a>
-        <a href="contact.html" class="btn-primary !py-2.5 !px-6">Book a Consultation</a>
+        <a href="/" class="nav-link text-sm uppercase tracking-wider transition-colors duration-200 pb-1" aria-current="page">Home</a>
+        <a href="/services.html" class="nav-link text-sm uppercase tracking-wider transition-colors duration-200 pb-1">Services</a>
+        <a href="/about.html" class="nav-link text-sm uppercase tracking-wider transition-colors duration-200 pb-1">About</a>
+        <a href="/blog.html" class="nav-link text-sm uppercase tracking-wider transition-colors duration-200 pb-1">Blog</a>
+        <a href="/contact.html" class="nav-link text-sm uppercase tracking-wider transition-colors duration-200 pb-1">Contact</a>
+        <a href="/contact.html" class="btn-primary !py-2.5 !px-6">Book a Consultation</a>
       </div>
 
-      <button id="hamburger-btn" class="lg:hidden text-white p-2" aria-label="Toggle menu">
-        <i data-lucide="menu" class="w-6 h-6"></i>
+      <button id="hamburger-btn" class="lg:hidden hamburger-btn" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
       </button>
     </div>
+  </nav>
 
-    <!-- Mobile Menu -->
-    <div id="mobile-menu" class="fixed inset-0 bg-brand-navy z-40 translate-x-full transition-transform duration-300 lg:hidden">
-      <div class="flex flex-col items-center justify-center h-full gap-8 text-lg">
-        <a href="index.html" class="text-white/80 hover:text-brand-gold transition-colors">Home</a>
-        <a href="services.html" class="text-white/80 hover:text-brand-gold transition-colors">Services</a>
-        <a href="about.html" class="text-white/80 hover:text-brand-gold transition-colors">About</a>
-        <a href="blog.html" class="text-white/80 hover:text-brand-gold transition-colors">Blog</a>
-        <a href="contact.html" class="text-white/80 hover:text-brand-gold transition-colors">Contact</a>
-        <a href="contact.html" class="btn-primary mt-4">Book a Consultation</a>
+  <!-- Mobile Menu Overlay (outside nav to avoid z-index conflicts) -->
+  <div id="mobile-menu" role="dialog" aria-modal="true" class="fixed inset-0 lg:hidden" style="background:#0D1B2A;z-index:1000;transform:translateX(100%);transition:transform 0.35s cubic-bezier(0.16,1,0.3,1);">
+    <div class="flex flex-col h-full px-6 py-6">
+      <!-- Top bar -->
+      <div class="flex items-center justify-between flex-shrink-0">
+        <a href="/" class="inline-block align-middle">
+          <img src="/src/assets/images/bizcore-logo.svg" alt="BIZCORE" class="h-7 w-auto block" />
+        </a>
+        <button id="close-menu-btn" class="w-10 h-10 rounded-full flex items-center justify-center text-white/60 hover:text-white transition-all" aria-label="Close menu" style="background:transparent;touch-action:manipulation;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="pointer-events:none;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <!-- Nav links -->
+      <nav class="flex flex-col items-center gap-6">
+        <a href="/" class="mobile-nav-link text-white/80 hover:text-brand-gold text-xl font-heading font-medium transition-all duration-200">Home</a>
+        <a href="/services.html" class="mobile-nav-link text-white/80 hover:text-brand-gold text-xl font-heading font-medium transition-all duration-200">Services</a>
+        <a href="/about.html" class="mobile-nav-link text-white/80 hover:text-brand-gold text-xl font-heading font-medium transition-all duration-200">About</a>
+        <a href="/blog.html" class="mobile-nav-link text-white/80 hover:text-brand-gold text-xl font-heading font-medium transition-all duration-200">Blog</a>
+        <a href="/contact.html" class="mobile-nav-link text-white/80 hover:text-brand-gold text-xl font-heading font-medium transition-all duration-200">Contact</a>
+      </nav>
+      <!-- CTA -->
+      <div style="margin-top:32px;">
+        <a href="/contact.html" class="btn-primary w-full text-center block">Book a Consultation</a>
       </div>
     </div>
-  </nav>
+  </div>
 
   <main>
 
     <!-- Hero -->
-    <section class="relative min-h-screen flex items-center bg-brand-navy overflow-hidden pt-16">
-      <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 25% 50%, rgba(201,168,76,0.3) 0%, transparent 50%), radial-gradient(circle at 75% 30%, rgba(201,168,76,0.15) 0%, transparent 50%);"></div>
-      <div class="max-w-content mx-auto px-6 py-20 text-center lg:text-left relative z-10 w-full">
-        <div class="max-w-3xl mx-auto lg:mx-0">
-          <h1 class="font-display text-5xl md:text-7xl font-bold text-white leading-tight !mb-2 reveal">
+    <section class="relative hero-min-height flex items-center overflow-hidden pt-16" id="hero-carousel">
+      <!-- Slides Wrapper -->
+      <div class="hero-slides-wrapper" style="background:#0D1B2A;">
+        <div class="hero-slide bg-center bg-cover bg-no-repeat" style="background-image: url('/src/assets/images/hero/hero-1.svg');"></div>
+        <div class="hero-slide bg-center bg-cover bg-no-repeat" style="background-image: url('/src/assets/images/hero/hero-2.svg');"></div>
+        <div class="hero-slide bg-center bg-cover bg-no-repeat" style="background-image: url('/src/assets/images/hero/hero-3.svg');"></div>
+      </div>
+      <!-- Dark overlays -->
+      <div class="absolute inset-0 z-[2]" style="background: rgba(13,27,42,0.65);"></div>
+      <div class="absolute inset-0 z-[2] opacity-40" style="background: linear-gradient(135deg, rgba(13,27,42,0.8) 0%, transparent 60%);"></div>
+      <!-- Content -->
+      <div class="max-w-content mx-auto px-6 py-20 text-center relative z-10 w-full">
+        <div class="max-w-3xl mx-auto">
+          <h1 class="display-hero text-white leading-[1.1] !mb-2">
             Structured Finance.<br />
             <span class="text-brand-gold">Sustainable Growth.</span>
           </h1>
-          <p class="text-lg md:text-xl text-white/70 leading-relaxed mb-10 max-w-2xl reveal">
-            BIZCORE delivers expert financial planning, market intelligence, and data-driven strategy to help businesses grow with confidence.
+          <p class="text-lg md:text-xl text-white/70 leading-snug mb-8 max-w-sm mx-auto">
+            Planning and intelligence<br>
+            for business growth.
           </p>
-          <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start reveal">
-            <a href="contact.html" class="btn-primary">Book a Consultation</a>
-            <a href="services.html" class="btn-secondary">Explore Our Services</a>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="/contact.html" class="btn-primary">Book a Consultation</a>
+            <a href="/services.html" class="btn-secondary">Explore Our Services</a>
           </div>
         </div>
+      </div>
+      <!-- Dots -->
+      <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 flex gap-3">
+        <button class="hero-dot w-3 h-3 rounded-full transition-all duration-300" data-slide="0" style="background:#C9A84C;"></button>
+        <button class="hero-dot w-3 h-3 rounded-full transition-all duration-300" data-slide="1" style="background:rgba(255,255,255,0.4);"></button>
+        <button class="hero-dot w-3 h-3 rounded-full transition-all duration-300" data-slide="2" style="background:rgba(255,255,255,0.4);"></button>
       </div>
     </section>
 
@@ -135,7 +325,7 @@
     <section class="section bg-white reveal">
       <div class="container-content">
         <h2 class="section-title text-center mb-2 reveal">What We Do</h2>
-        <p class="text-brand-muted text-center mx-auto font-light !mb-6 reveal text-lg max-w-lg">Expert consulting tailored to your business.</p>
+        <p class="text-brand-muted text-center mx-auto font-light !mb-6 reveal text-lg max-w-lg"><span class="md:hidden">Expert consulting.</span><span class="hidden md:inline">Expert consulting tailored to your business.</span></p>
 
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
           <div class="card text-center reveal">
@@ -144,7 +334,7 @@
             </div>
             <h3 class="font-heading text-xl font-semibold text-brand-navy mb-3">Financial Planning & FP&A</h3>
             <p class="text-brand-muted text-sm leading-relaxed mb-5">Strategic financial planning and analysis to drive profitability and sustainable growth.</p>
-            <a href="#contact" class="text-brand-gold text-sm font-heading font-semibold uppercase tracking-wider hover:text-brand-gold-light transition-colors">Request This Service →</a>
+            <a href="/services.html" class="text-brand-gold text-sm font-heading font-semibold uppercase tracking-wider hover:text-brand-gold-light transition-colors">Request This Service →</a>
           </div>
 
           <div class="card text-center reveal">
@@ -152,8 +342,8 @@
               <i data-lucide="search" class="w-6 h-6 text-brand-gold leading-none"></i>
             </div>
             <h3 class="font-heading text-xl font-semibold text-brand-navy mb-3">Market Research & Strategy</h3>
-            <p class="text-brand-muted text-sm leading-relaxed mb-5">Deep market intelligence and actionable business strategies for competitive advantage.</p>
-            <a href="#contact" class="text-brand-gold text-sm font-heading font-semibold uppercase tracking-wider hover:text-brand-gold-light transition-colors">Request This Service →</a>
+            <p class="text-brand-muted text-sm leading-relaxed mb-5">Deep market intelligence and actionable<br class="md:hidden"> business strategies for competitive advantage.</p>
+            <a href="/services.html" class="text-brand-gold text-sm font-heading font-semibold uppercase tracking-wider hover:text-brand-gold-light transition-colors">Request This Service →</a>
           </div>
 
           <div class="card text-center reveal">
@@ -162,76 +352,76 @@
             </div>
             <h3 class="font-heading text-xl font-semibold text-brand-navy mb-3">Data Analytics & Intelligence</h3>
             <p class="text-brand-muted text-sm leading-relaxed mb-5">Transform raw data into actionable insights with advanced analytics and reporting.</p>
-            <a href="#contact" class="text-brand-gold text-sm font-heading font-semibold uppercase tracking-wider hover:text-brand-gold-light transition-colors">Request This Service →</a>
+            <a href="/services.html" class="text-brand-gold text-sm font-heading font-semibold uppercase tracking-wider hover:text-brand-gold-light transition-colors">Request This Service →</a>
           </div>
 
-          <div class="card text-center reveal">
+          <div class="card text-center reveal hidden md:block">
             <div class="icon-ellipse w-12 h-12 rounded-full bg-brand-navy inline-flex items-center justify-center mx-auto mb-5">
               <i data-lucide="briefcase" class="w-6 h-6 text-brand-gold leading-none"></i>
             </div>
             <h3 class="font-heading text-xl font-semibold text-brand-navy mb-3">Investment Advisory</h3>
             <p class="text-brand-muted text-sm leading-relaxed mb-5">Expert guidance on investment strategies and pitch deck creation to secure funding.</p>
-            <a href="#contact" class="text-brand-gold text-sm font-heading font-semibold uppercase tracking-wider hover:text-brand-gold-light transition-colors">Request This Service →</a>
+            <a href="/services.html" class="text-brand-gold text-sm font-heading font-semibold uppercase tracking-wider hover:text-brand-gold-light transition-colors">Request This Service →</a>
           </div>
 
-          <div class="card text-center reveal">
+          <div class="card text-center reveal hidden md:block">
             <div class="icon-ellipse w-12 h-12 rounded-full bg-brand-navy inline-flex items-center justify-center mx-auto mb-5">
               <i data-lucide="trending-up" class="w-6 h-6 text-brand-gold leading-none"></i>
             </div>
             <h3 class="font-heading text-xl font-semibold text-brand-navy mb-3">Business Development</h3>
             <p class="text-brand-muted text-sm leading-relaxed mb-5">Strategic business development to identify opportunities and drive revenue growth.</p>
-            <a href="#contact" class="text-brand-gold text-sm font-heading font-semibold uppercase tracking-wider hover:text-brand-gold-light transition-colors">Request This Service →</a>
+            <a href="/services.html" class="text-brand-gold text-sm font-heading font-semibold uppercase tracking-wider hover:text-brand-gold-light transition-colors">Request This Service →</a>
           </div>
 
-          <div class="card text-center reveal">
+          <div class="card text-center reveal hidden md:block">
             <div class="icon-ellipse w-12 h-12 rounded-full bg-brand-navy inline-flex items-center justify-center mx-auto mb-5">
               <i data-lucide="activity" class="w-6 h-6 text-brand-gold leading-none"></i>
             </div>
             <h3 class="font-heading text-xl font-semibold text-brand-navy mb-3">Performance Intelligence & Reporting</h3>
             <p class="text-brand-muted text-sm leading-relaxed mb-5">Real-time dashboards and KPI tracking to measure, optimize, and report business performance.</p>
-            <a href="#contact" class="text-brand-gold text-sm font-heading font-semibold uppercase tracking-wider hover:text-brand-gold-light transition-colors">Request This Service →</a>
+            <a href="/services.html" class="text-brand-gold text-sm font-heading font-semibold uppercase tracking-wider hover:text-brand-gold-light transition-colors">Request This Service →</a>
           </div>
         </div>
       </div>
     </section>
 
     <!-- Stats Strip -->
-    <section class="bg-brand-navy py-16 overflow-hidden reveal">
+    <section class="bg-brand-navy py-10 md:py-16 overflow-hidden reveal">
       <div class="marquee-track flex" style="width: calc(200%); animation: marquee 28s linear infinite; animation-play-state: running;">
         <div class="flex items-start justify-around" style="width: 50%; flex-shrink: 0; min-width: 50%;">
           <div class="text-center" style="flex: 0 1 180px;">
-            <p class="font-display text-4xl md:text-5xl font-bold text-brand-gold mb-2 leading-none">50+</p>
-            <p class="text-white/70 text-sm uppercase tracking-wider leading-tight">Clients Advised</p>
+            <p class="stat-number">50+</p>
+            <p class="text-white/70 text-xs uppercase tracking-wider leading-tight">Clients</p>
           </div>
           <div class="text-center" style="flex: 0 1 180px;">
-            <p class="font-display text-4xl md:text-5xl font-bold text-brand-gold mb-2 leading-none">15+</p>
-            <p class="text-white/70 text-sm uppercase tracking-wider leading-tight">Financial Models</p>
+            <p class="stat-number">15+</p>
+            <p class="text-white/70 text-xs uppercase tracking-wider leading-tight">Models</p>
           </div>
           <div class="text-center" style="flex: 0 1 180px;">
-            <p class="font-display text-4xl md:text-5xl font-bold text-brand-gold mb-2 leading-none">Startup </p>
-            <p class="text-white/70 text-sm uppercase tracking-wider leading-tight">SME Focus</p>
+            <p class="stat-number">Startup </p>
+            <p class="text-white/70 text-xs uppercase tracking-wider leading-tight">SME Focus</p>
           </div>
           <div class="text-center" style="flex: 0 1 180px;">
-            <p class="font-display text-4xl md:text-5xl font-bold text-brand-gold mb-2 leading-none">100%</p>
-            <p class="text-white/70 text-sm uppercase tracking-wider leading-tight">Data-Driven</p>
+            <p class="stat-number">100%</p>
+            <p class="text-white/70 text-xs uppercase tracking-wider leading-tight">Data-Driven</p>
           </div>
         </div>
         <div class="flex items-start justify-around" style="width: 50%; flex-shrink: 0; min-width: 50%;">
           <div class="text-center" style="flex: 0 1 180px;">
-            <p class="font-display text-4xl md:text-5xl font-bold text-brand-gold mb-2 leading-none">50+</p>
-            <p class="text-white/70 text-sm uppercase tracking-wider leading-tight">Clients Advised</p>
+            <p class="stat-number">50+</p>
+            <p class="text-white/70 text-xs uppercase tracking-wider leading-tight">Clients</p>
           </div>
           <div class="text-center" style="flex: 0 1 180px;">
-            <p class="font-display text-4xl md:text-5xl font-bold text-brand-gold mb-2 leading-none">15+</p>
-            <p class="text-white/70 text-sm uppercase tracking-wider leading-tight">Financial Models</p>
+            <p class="stat-number">15+</p>
+            <p class="text-white/70 text-xs uppercase tracking-wider leading-tight">Models</p>
           </div>
           <div class="text-center" style="flex: 0 1 180px;">
-            <p class="font-display text-4xl md:text-5xl font-bold text-brand-gold mb-2 leading-none">Startup </p>
-            <p class="text-white/70 text-sm uppercase tracking-wider leading-tight">SME Focus</p>
+            <p class="stat-number">Startup </p>
+            <p class="text-white/70 text-xs uppercase tracking-wider leading-tight">SME Focus</p>
           </div>
           <div class="text-center" style="flex: 0 1 180px;">
-            <p class="font-display text-4xl md:text-5xl font-bold text-brand-gold mb-2 leading-none">100%</p>
-            <p class="text-white/70 text-sm uppercase tracking-wider leading-tight">Data-Driven</p>
+            <p class="stat-number">100%</p>
+            <p class="text-white/70 text-xs uppercase tracking-wider leading-tight">Data-Driven</p>
           </div>
         </div>
       </div>
@@ -242,12 +432,9 @@
       <div class="container-content">
         <div class="grid lg:grid-cols-2 gap-12 items-center">
           <div>
-            <h2 class="section-title reveal !mb-2">Driving Business Growth Through Finance & Strategy</h2>
+            <h2 class="section-title reveal !mb-2">Driving Growth Through<br>Finance & Strategy</h2>
             <p class="text-brand-muted mb-6 leading-relaxed reveal">
-              BIZCORE Consulting brings together deep expertise in financial planning, market research, and data analytics to help businesses make smarter decisions and achieve sustainable growth.
-            </p>
-            <p class="text-brand-muted mb-8 leading-relaxed reveal">
-              Our team of experienced professionals works alongside your leadership to develop strategies that deliver measurable results.
+              Financial planning, market research, and data analytics to help you make smarter decisions and drive sustainable growth.
             </p>
             <ul class="space-y-3 mb-8 reveal">
               <li class="flex items-center gap-3 text-brand-text">
@@ -267,11 +454,11 @@
                 <span><strong>Head of Market Research</strong></span>
               </li>
             </ul>
-            <a href="about.html" class="btn-primary inline-block reveal">Meet the Team →</a>
+            <a href="/about.html" class="btn-primary inline-block reveal">Meet the Team →</a>
           </div>
           <div class="relative reveal">
             <div class="aspect-[4/3] bg-brand-charcoal rounded-2xl overflow-hidden">
-              <img src="assets/images/Original Service Pic 1.jpg" alt="BIZCORE Team" class="w-full h-full object-cover object-top" loading="lazy">
+              <img src="/src/assets/images/about-us-pic.svg" alt="BIZCORE Team" class="w-full h-full object-cover" style="object-position: 50% 20%;" loading="lazy">
             </div>
           </div>
         </div>
@@ -284,28 +471,115 @@
         <h2 class="section-title text-center mb-2 reveal">How We Work</h2>
         <p class="text-brand-muted text-center mx-auto font-light reveal text-lg max-w-lg" style="margin-bottom:2rem;">A proven process that delivers results.</p>
 
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mt-8 items-stretch">
-          <div class="card text-center reveal">
-            <span class="w-12 h-12 rounded-full bg-brand-navy text-brand-gold flex items-center justify-center mx-auto mb-5 font-heading font-bold text-lg">01</span>
-            <h3 class="font-heading text-lg font-semibold text-brand-navy mb-2">Discovery Call</h3>
-            <p class="text-brand-muted text-sm">We learn about your business, challenges, and goals.</p>
+          <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mt-8 items-stretch">
+            <div class="card process-card text-center reveal">
+              <span class="w-12 h-12 rounded-full bg-brand-navy text-brand-gold flex items-center justify-center mx-auto mb-5 font-heading font-bold text-lg">01</span>
+              <h3 class="font-heading text-lg font-semibold text-brand-navy mb-2">Discovery Call</h3>
+              <p class="text-brand-muted text-sm max-w-[260px] mx-auto">We take time to learn about your business, challenges, and unique goals.</p>
+            </div>
+            <div class="card process-card text-center reveal">
+              <span class="w-12 h-12 rounded-full bg-brand-navy text-brand-gold flex items-center justify-center mx-auto mb-5 font-heading font-bold text-lg">02</span>
+              <h3 class="font-heading text-lg font-semibold text-brand-navy mb-2">Scoping & Proposal</h3>
+              <p class="text-brand-muted text-sm max-w-[260px] mx-auto">We clearly define the project scope and deliver a transparent proposal.</p>
+            </div>
+            <div class="card process-card text-center reveal">
+              <span class="w-12 h-12 rounded-full bg-brand-navy text-brand-gold flex items-center justify-center mx-auto mb-5 font-heading font-bold text-lg">03</span>
+              <h3 class="font-heading text-lg font-semibold text-brand-navy mb-2">Execution</h3>
+              <p class="text-brand-muted text-sm max-w-[260px] mx-auto">Our expert team executes every step with precision and full transparency.</p>
+            </div>
+            <div class="card process-card text-center reveal hidden md:block">
+              <span class="w-12 h-12 rounded-full bg-brand-navy text-brand-gold flex items-center justify-center mx-auto mb-5 font-heading font-bold text-lg">04</span>
+              <h3 class="font-heading text-lg font-semibold text-brand-navy mb-2">Delivery & Review</h3>
+              <p class="text-brand-muted text-sm max-w-[260px] mx-auto">We deliver actionable insights and review outcomes together.</p>
+            </div>
           </div>
-          <div class="card text-center reveal">
-            <span class="w-12 h-12 rounded-full bg-brand-navy text-brand-gold flex items-center justify-center mx-auto mb-5 font-heading font-bold text-lg">02</span>
-            <h3 class="font-heading text-lg font-semibold text-brand-navy mb-2">Scoping & Proposal</h3>
-            <p class="text-brand-muted text-sm">We define the scope and deliver a clear proposal.</p>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="section testimonials-section bg-white overflow-hidden reveal">
+      <div class="container-content text-center mb-10">
+        <h2 class="section-title text-center mb-2 reveal">What Our Clients Say</h2>
+        <p class="text-brand-muted text-center mx-auto font-light reveal text-lg max-w-lg"><span class="md:hidden">Real results from our clients.</span><span class="hidden md:inline">Real results from real businesses we've worked with.</span></p>
+      </div>
+      <div class="testimonials-grid grid md:grid-cols-2 lg:grid-cols-4 gap-8 items-stretch container-content">
+        <div class="testimonial-card flex flex-col rounded-2xl overflow-hidden text-left reveal" style="box-shadow: 0 2px 8px rgba(0,0,0,0.06); transition-delay:0s;">
+          <div class="bg-brand-navy px-5 py-4 flex items-center gap-3">
+            <div class="w-11 h-11 rounded-full bg-brand-gold flex items-center justify-center text-brand-navy font-heading font-semibold text-sm flex-shrink-0">AO</div>
+            <div class="min-w-0">
+              <p class="text-white font-heading font-semibold text-sm truncate">Adaeze Okafor</p>
+              <p class="text-white/60 text-xs truncate">Founder, Startup Name</p>
+            </div>
           </div>
-          <div class="card text-center reveal">
-            <span class="w-12 h-12 rounded-full bg-brand-navy text-brand-gold flex items-center justify-center mx-auto mb-5 font-heading font-bold text-lg">03</span>
-            <h3 class="font-heading text-lg font-semibold text-brand-navy mb-2">Execution</h3>
-            <p class="text-brand-muted text-sm">Our team executes with precision and transparency.</p>
-          </div>
-          <div class="card text-center reveal">
-            <span class="w-12 h-12 rounded-full bg-brand-navy text-brand-gold flex items-center justify-center mx-auto mb-5 font-heading font-bold text-lg">04</span>
-            <h3 class="font-heading text-lg font-semibold text-brand-navy mb-2">Delivery & Review</h3>
-            <p class="text-brand-muted text-sm">We deliver insights and review outcomes together.</p>
+          <div class="bg-brand-bg px-5 py-5 flex-1">
+            <div class="flex gap-0.5 mb-3">
+              <i data-lucide="star" class="w-3.5 h-3.5 text-brand-gold fill-current"></i>
+              <i data-lucide="star" class="w-3.5 h-3.5 text-brand-gold fill-current"></i>
+              <i data-lucide="star" class="w-3.5 h-3.5 text-brand-gold fill-current"></i>
+              <i data-lucide="star" class="w-3.5 h-3.5 text-brand-gold fill-current"></i>
+              <i data-lucide="star" class="w-3.5 h-3.5 text-brand-gold fill-current"></i>
+            </div>
+            <p class="text-brand-text text-sm leading-relaxed"><span class="md:hidden">"BIZCORE turned our data into a clear growth strategy."</span><span class="hidden md:inline">"BIZCORE turned fragmented data into a clear growth strategy that moved our business forward."</span></p>
           </div>
         </div>
+        <div class="testimonial-card flex flex-col rounded-2xl overflow-hidden text-left reveal" style="box-shadow: 0 2px 8px rgba(0,0,0,0.06); transition-delay:0.1s;">
+          <div class="bg-brand-navy px-5 py-4 flex items-center gap-3">
+            <div class="w-11 h-11 rounded-full bg-brand-gold flex items-center justify-center text-brand-navy font-heading font-semibold text-sm flex-shrink-0">TB</div>
+            <div class="min-w-0">
+              <p class="text-white font-heading font-semibold text-sm truncate">Tunde Bakare</p>
+              <p class="text-white/60 text-xs truncate">CEO, SME Name</p>
+            </div>
+          </div>
+          <div class="bg-brand-bg px-5 py-5 flex-1">
+            <div class="flex gap-0.5 mb-3">
+              <i data-lucide="star" class="w-3.5 h-3.5 text-brand-gold fill-current"></i>
+              <i data-lucide="star" class="w-3.5 h-3.5 text-brand-gold fill-current"></i>
+              <i data-lucide="star" class="w-3.5 h-3.5 text-brand-gold fill-current"></i>
+              <i data-lucide="star" class="w-3.5 h-3.5 text-brand-gold fill-current"></i>
+              <i data-lucide="star" class="w-3.5 h-3.5 text-brand-gold fill-current"></i>
+            </div>
+            <p class="text-brand-text text-sm leading-relaxed"><span class="md:hidden">"Their modeling helped us secure investor interest."</span><span class="hidden md:inline">"The financial modeling and research we got from BIZCORE helped us secure investor interest."</span></p>
+          </div>
+        </div>
+        <div class="testimonial-card flex flex-col rounded-2xl overflow-hidden text-left reveal" style="box-shadow: 0 2px 8px rgba(0,0,0,0.06); transition-delay:0.2s;">
+          <div class="bg-brand-navy px-5 py-4 flex items-center gap-3">
+            <div class="w-11 h-11 rounded-full bg-brand-gold flex items-center justify-center text-brand-navy font-heading font-semibold text-sm flex-shrink-0">CE</div>
+            <div class="min-w-0">
+              <p class="text-white font-heading font-semibold text-sm truncate">Chiamaka Eze</p>
+              <p class="text-white/60 text-xs truncate">Operations Lead, Company Name</p>
+            </div>
+          </div>
+          <div class="bg-brand-bg px-5 py-5 flex-1">
+            <div class="flex gap-0.5 mb-3">
+              <i data-lucide="star" class="w-3.5 h-3.5 text-brand-gold fill-current"></i>
+              <i data-lucide="star" class="w-3.5 h-3.5 text-brand-gold fill-current"></i>
+              <i data-lucide="star" class="w-3.5 h-3.5 text-brand-gold fill-current"></i>
+              <i data-lucide="star" class="w-3.5 h-3.5 text-brand-gold fill-current"></i>
+              <i data-lucide="star" class="w-3.5 h-3.5 text-brand-gold fill-current"></i>
+            </div>
+            <p class="text-brand-text text-sm leading-relaxed"><span class="md:hidden">"It felt like having our own senior strategy team."</span><span class="hidden md:inline">"Working with BIZCORE felt like having a senior strategy team that truly understood our market."</span></p>
+          </div>
+        </div>
+        <div class="testimonial-card flex flex-col rounded-2xl overflow-hidden text-left reveal hidden md:block" style="box-shadow: 0 2px 8px rgba(0,0,0,0.06); transition-delay:0.3s;">
+          <div class="bg-brand-navy px-5 py-4 flex items-center gap-3">
+            <div class="w-11 h-11 rounded-full bg-brand-gold flex items-center justify-center text-brand-navy font-heading font-semibold text-sm flex-shrink-0">OK</div>
+            <div class="min-w-0">
+              <p class="text-white font-heading font-semibold text-sm truncate">Oluwaseun Kola</p>
+              <p class="text-white/60 text-xs truncate">MD, Growth Ventures</p>
+            </div>
+          </div>
+          <div class="bg-brand-bg px-5 py-5 flex-1">
+            <div class="flex gap-0.5 mb-3">
+              <i data-lucide="star" class="w-3.5 h-3.5 text-brand-gold fill-current"></i>
+              <i data-lucide="star" class="w-3.5 h-3.5 text-brand-gold fill-current"></i>
+              <i data-lucide="star" class="w-3.5 h-3.5 text-brand-gold fill-current"></i>
+              <i data-lucide="star" class="w-3.5 h-3.5 text-brand-gold fill-current"></i>
+              <i data-lucide="star" class="w-3.5 h-3.5 text-brand-gold fill-current"></i>
+            </div>
+            <p class="text-brand-text text-sm leading-relaxed">"BIZCORE's strategic insights gave us the confidence to scale into new markets successfully."</p>
+          </div>
+        </div>
+      </div>
       </div>
     </section>
 
@@ -317,39 +591,39 @@
             <h2 class="section-title mb-2">Latest Insights</h2>
             <p class="section-subtitle mb-0">Expert perspectives on finance, strategy, and data.</p>
           </div>
-          <a href="blog.html" class="btn-secondary hidden md:inline-block">Visit the Blog →</a>
+          <a href="/blog.html" class="btn-secondary hidden md:inline-block">Visit the Blog →</a>
         </div>
 
         <div class="split-slider relative overflow-hidden" style="min-height:220px;">
-          <div class="split-slide absolute inset-0 flex items-center transition-all duration-[900ms] ease-in-out" data-index="0" style="transform:translateX(0);opacity:1;">
-            <div class="w-1/2 pr-8 lg:pr-12" style="border-right:1px solid #C9A84C;">
-              <span class="inline-block bg-brand-gold text-brand-navy text-xs font-heading font-semibold uppercase tracking-wider px-3 py-1 rounded-full mb-4">Financial Planning</span>
-              <h3 class="font-display text-2xl md:text-3xl font-bold text-brand-navy mb-6" style="font-weight:700;">5 Financial Models Every SME Owner Should Know</h3>
-              <a href="blog.html" class="text-brand-gold text-sm font-heading font-semibold uppercase tracking-wider hover:underline transition-all">Read More →</a>
+          <div class="split-slide absolute inset-0 flex flex-col md:flex-row items-center transition-all duration-[900ms] ease-in-out" data-index="0" style="transform:translateX(0);opacity:1;">
+            <div class="w-full md:w-1/2 pr-0 md:pr-8 lg:pr-12 pb-4 md:pb-0 border-r-0 md:border-r" style="border-color:#C9A84C;">
+              <span class="inline-block bg-brand-gold text-brand-navy text-xs font-heading font-semibold uppercase tracking-wider px-3 py-1 rounded-full mb-3 md:mb-4">Financial Planning</span>
+              <h3 class="font-display text-xl md:text-3xl font-bold text-brand-navy mb-3 md:mb-6" style="font-weight:700;">5 Financial Models Every SME Owner Should Know</h3>
+              <a href="/blog.html" class="text-brand-gold text-sm font-heading font-semibold uppercase tracking-wider hover:underline transition-all">Read More →</a>
             </div>
-            <div class="w-1/2 pl-8 lg:pl-12 flex flex-col justify-center">
+            <div class="w-full md:w-1/2 pl-0 md:pl-8 lg:pl-12 flex flex-col justify-center">
               <p class="text-brand-muted text-sm leading-relaxed mb-4">Understanding the right financial models can transform how you plan, forecast, and grow your business.</p>
               <p class="text-xs text-brand-muted"><span>BIZCORE Team</span> <span class="mx-1.5">·</span> <span>May 2025</span></p>
             </div>
           </div>
-          <div class="split-slide absolute inset-0 flex items-center transition-all duration-[900ms] ease-in-out" data-index="1" style="transform:translateX(100%);opacity:0;">
-            <div class="w-1/2 pr-8 lg:pr-12" style="border-right:1px solid #C9A84C;">
-              <span class="inline-block bg-brand-gold text-brand-navy text-xs font-heading font-semibold uppercase tracking-wider px-3 py-1 rounded-full mb-4">Market Research</span>
-              <h3 class="font-display text-2xl md:text-3xl font-bold text-brand-navy mb-6" style="font-weight:700;">How to Validate Your Market Before You Launch</h3>
-              <a href="blog.html" class="text-brand-gold text-sm font-heading font-semibold uppercase tracking-wider hover:underline transition-all">Read More →</a>
+          <div class="split-slide absolute inset-0 flex flex-col md:flex-row items-center transition-all duration-[900ms] ease-in-out" data-index="1" style="transform:translateX(100%);opacity:0;">
+            <div class="w-full md:w-1/2 pr-0 md:pr-8 lg:pr-12 pb-4 md:pb-0 border-r-0 md:border-r" style="border-color:#C9A84C;">
+              <span class="inline-block bg-brand-gold text-brand-navy text-xs font-heading font-semibold uppercase tracking-wider px-3 py-1 rounded-full mb-3 md:mb-4">Market Research</span>
+              <h3 class="font-display text-xl md:text-3xl font-bold text-brand-navy mb-3 md:mb-6" style="font-weight:700;">How to Validate Your Market Before You Launch</h3>
+              <a href="/blog.html" class="text-brand-gold text-sm font-heading font-semibold uppercase tracking-wider hover:underline transition-all">Read More →</a>
             </div>
-            <div class="w-1/2 pl-8 lg:pl-12 flex flex-col justify-center">
+            <div class="w-full md:w-1/2 pl-0 md:pl-8 lg:pl-12 flex flex-col justify-center">
               <p class="text-brand-muted text-sm leading-relaxed mb-4">Rushing to market without research is one of the most costly mistakes a startup can make. Here is how to do it right.</p>
               <p class="text-xs text-brand-muted"><span>BIZCORE Team</span> <span class="mx-1.5">·</span> <span>April 2025</span></p>
             </div>
           </div>
-          <div class="split-slide absolute inset-0 flex items-center transition-all duration-[900ms] ease-in-out" data-index="2" style="transform:translateX(100%);opacity:0;">
-            <div class="w-1/2 pr-8 lg:pr-12" style="border-right:1px solid #C9A84C;">
-              <span class="inline-block bg-brand-gold text-brand-navy text-xs font-heading font-semibold uppercase tracking-wider px-3 py-1 rounded-full mb-4">Data Analytics</span>
-              <h3 class="font-display text-2xl md:text-3xl font-bold text-brand-navy mb-6" style="font-weight:700;">Top 5 KPIs Every Business Owner Should Be Tracking</h3>
-              <a href="blog.html" class="text-brand-gold text-sm font-heading font-semibold uppercase tracking-wider hover:underline transition-all">Read More →</a>
+          <div class="split-slide absolute inset-0 flex flex-col md:flex-row items-center transition-all duration-[900ms] ease-in-out" data-index="2" style="transform:translateX(100%);opacity:0;">
+            <div class="w-full md:w-1/2 pr-0 md:pr-8 lg:pr-12 pb-4 md:pb-0 border-r-0 md:border-r" style="border-color:#C9A84C;">
+              <span class="inline-block bg-brand-gold text-brand-navy text-xs font-heading font-semibold uppercase tracking-wider px-3 py-1 rounded-full mb-3 md:mb-4">Data Analytics</span>
+              <h3 class="font-display text-xl md:text-3xl font-bold text-brand-navy mb-3 md:mb-6" style="font-weight:700;">Top 5 KPIs Every Business Owner Should Be Tracking</h3>
+              <a href="/blog.html" class="text-brand-gold text-sm font-heading font-semibold uppercase tracking-wider hover:underline transition-all">Read More →</a>
             </div>
-            <div class="w-1/2 pl-8 lg:pr-12 flex flex-col justify-center">
+            <div class="w-full md:w-1/2 pl-0 md:pl-8 lg:pr-12 flex flex-col justify-center">
               <p class="text-brand-muted text-sm leading-relaxed mb-4">If you are not measuring the right numbers, you are flying blind. These are the metrics that actually move the needle.</p>
               <p class="text-xs text-brand-muted"><span>BIZCORE Team</span> <span class="mx-1.5">·</span> <span>March 2025</span></p>
             </div>
@@ -363,7 +637,7 @@
         </div>
 
         <div class="text-center mt-10 md:hidden">
-          <a href="blog.html" class="btn-secondary">Visit the Blog →</a>
+          <a href="/blog.html" class="btn-secondary">Visit the Blog →</a>
         </div>
       </div>
     </section>
@@ -430,17 +704,17 @@
     </script>
 
     <!-- CTA Banner -->
-    <section class="relative py-20 px-6 reveal overflow-hidden">
-      <div class="absolute inset-0 z-0" style="background-image:url('/assets/images/Pattern%20Bg%20cta.svg');background-size:cover;background-position:center;"></div>
-      <div class="absolute inset-0 z-[1]" style="background:rgba(13,27,42,0.80);"></div>
+    <section class="relative pt-12 pb-16 md:pt-16 md:pb-20 px-6 reveal overflow-hidden">
+      <div class="absolute inset-0 z-0" style="background-image:url('/src/assets/images/cta-bg.svg');background-size:cover;background-position:center;"></div>
+      <div class="absolute inset-0 z-[1]" style="background:rgba(13,27,42,0.60);"></div>
       <div class="container-content text-center relative z-10">
-        <h2 class="font-display text-3xl md:text-4xl font-bold text-white !mb-2">
-          Ready to Take Your Business to the Next Level?
+        <h2 class="display-hero text-white !mb-2">
+          <span class="md:hidden">Ready to Level Up?</span><span class="hidden md:inline">Ready to Take Your Business to the Next Level?</span>
         </h2>
-        <p class="text-white/70 text-lg mb-8 max-w-xl mx-auto">
-          Book a free discovery call with our consultants today.
+        <p class="text-white/70 text-lg mb-8 max-w-xs md:max-w-xl mx-auto">
+          <span class="md:hidden">Book a free call with our team.</span><span class="hidden md:inline">Book a free discovery call with our consultants today.</span>
         </p>
-        <a href="contact.html" class="btn-primary text-lg">Schedule a Call</a>
+        <a href="/contact.html" class="btn-primary text-lg">Schedule a Call</a>
       </div>
     </section>
 
@@ -449,7 +723,10 @@
       <div class="container-content">
         <div class="max-w-2xl mx-auto text-center">
           <h2 class="section-title text-center reveal !mb-2">Let's Work Together</h2>
-          <p class="text-brand-muted text-lg mb-10 max-w-lg mx-auto reveal">Tell us about your business challenge and we'll get back to you within 24 hours.</p>
+          <p class="text-brand-muted text-lg mb-10 mx-auto reveal leading-snug" style="max-width:320px;">
+            Share your challenge<br>
+            and get a response in 24h.
+          </p>
           <form class="space-y-6 text-left" novalidate>
             <div class="grid sm:grid-cols-2 gap-6">
               <div>
@@ -465,21 +742,16 @@
             </div>
             <div>
               <label class="block text-sm font-heading font-semibold text-brand-navy mb-1.5" for="contact-service">Service Interested In</label>
-              <select id="contact-service" class="input w-full" required>
-                <option value="" disabled selected>Select a service</option>
-                <option value="Financial Planning & FP&A">Financial Planning & FP&A</option>
-                <option value="Market Research & Strategy">Market Research & Strategy</option>
-                <option value="Data Analytics & Intelligence">Data Analytics & Intelligence</option>
-                <option value="Investment Advisory">Investment Advisory</option>
-                <option value="Business Development">Business Development</option>
-                <option value="Performance Intelligence & Reporting">Performance Intelligence & Reporting</option>
-              </select>
-              <p class="text-red-500 text-xs mt-1 hidden" data-error="contact-service">Please select a service.</p>
+              <input id="contact-service" type="text" placeholder="e.g. Financial Planning, Market Research..." class="input w-full" required />
+              <p class="text-red-500 text-xs mt-1 hidden" data-error="contact-service">Please enter a service.</p>
             </div>
             <div>
               <label class="block text-sm font-heading font-semibold text-brand-navy mb-1.5" for="contact-message">Message</label>
-              <textarea id="contact-message" rows="4" placeholder="Tell us about your project..." class="input w-full resize-y" required maxlength="2000"></textarea>
-              <p class="text-red-500 text-xs mt-1 hidden" data-error="contact-message">Please enter a message.</p>
+              <textarea id="contact-message" rows="4" placeholder="Tell us about your project..." class="input w-full resize-y" required maxlength="2000" aria-describedby="message-counter-index"></textarea>
+              <div class="flex justify-between items-start">
+                <p class="text-red-500 text-xs mt-1 hidden" data-error="contact-message">Please enter a message.</p>
+                <p class="text-brand-muted text-xs mt-1" id="message-counter-index"><span id="message-remaining-index">2000</span>/2000 characters</p>
+              </div>
             </div>
             <button type="submit" class="btn-primary w-full text-center">Send Inquiry</button>
             <p class="text-green-600 text-sm text-center hidden" data-success>Thank you! We'll be in touch within 24 hours.</p>
@@ -491,20 +763,22 @@
   </main>
 
   <!-- Footer -->
-  <footer class="bg-brand-navy text-white py-16 px-6">
+  <footer class="bg-brand-navy text-white pt-16 pb-16 px-6">
     <div class="container-content">
       <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-10">
         <div>
-          <a href="index.html" class="font-display text-2xl font-bold text-white tracking-tight">BIZCORE</a>
+          <a href="/" class="inline-block align-middle">
+              <img src="/src/assets/images/bizcore-logo.svg" alt="BIZCORE" class="h-7 w-auto block" />
+            </a>
         </div>
         <div>
           <h4 class="font-heading text-sm font-semibold uppercase tracking-wider text-brand-gold mb-4">Quick Links</h4>
           <ul class="space-y-2">
-            <li><a href="index.html" class="text-white/60 hover:text-brand-gold text-sm transition-colors">Home</a></li>
-            <li><a href="services.html" class="text-white/60 hover:text-brand-gold text-sm transition-colors">Services</a></li>
-            <li><a href="about.html" class="text-white/60 hover:text-brand-gold text-sm transition-colors">About</a></li>
-            <li><a href="blog.html" class="text-white/60 hover:text-brand-gold text-sm transition-colors">Blog</a></li>
-            <li><a href="contact.html" class="text-white/60 hover:text-brand-gold text-sm transition-colors">Contact</a></li>
+            <li><a href="/" class="text-white/60 hover:text-brand-gold text-sm transition-colors">Home</a></li>
+            <li><a href="/services.html" class="text-white/60 hover:text-brand-gold text-sm transition-colors">Services</a></li>
+            <li><a href="/about.html" class="text-white/60 hover:text-brand-gold text-sm transition-colors">About</a></li>
+            <li><a href="/blog.html" class="text-white/60 hover:text-brand-gold text-sm transition-colors">Blog</a></li>
+            <li><a href="/contact.html" class="text-white/60 hover:text-brand-gold text-sm transition-colors">Contact</a></li>
           </ul>
         </div>
         <div>
@@ -518,18 +792,14 @@
         </div>
         <div>
           <h4 class="font-heading text-sm font-semibold uppercase tracking-wider text-brand-gold mb-4">Connect</h4>
-          <div class="flex gap-4">
-            <a href="#" class="footer-social-icon" aria-label="LinkedIn">
-              <i data-lucide="linkedin" class="w-5 h-5 text-white/80"></i>
+          <div class="footer-connect-container">
+            <a href="https://www.instagram.com/bizcore_consulting?igsh=OGxma2p1MnIybjl0&utm_source=qr" target="_blank" rel="noopener noreferrer" class="footer-social-icon" aria-label="Instagram">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
             </a>
-            <a href="#" class="footer-social-icon" aria-label="Twitter">
-              <i data-lucide="twitter" class="w-5 h-5 text-white/80"></i>
-            </a>
-            <a href="#" class="footer-social-icon" aria-label="Instagram">
-              <i data-lucide="instagram" class="w-5 h-5 text-white/80"></i>
-            </a>
-            <a href="#" class="footer-social-icon" aria-label="WhatsApp">
-              <i data-lucide="message-circle" class="w-5 h-5 text-white/80"></i>
+            <a href="https://www.tiktok.com/@bizcore_consulting?_r=1&_t=ZS-96h2eZPp2tZ" target="_blank" rel="noopener noreferrer" class="footer-social-icon" aria-label="TikTok">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+              </svg>
             </a>
           </div>
         </div>
@@ -543,6 +813,208 @@
   <script src="https://unpkg.com/lucide@latest"></script>
 
   
-  <script>lucide.createIcons();</script>
+  <script>try { lucide.createIcons(); } catch (e) {}</script>
+  <script>
+    (function(){
+      var wrapper = document.querySelector('#hero-carousel .hero-slides-wrapper');
+      if (!wrapper) return;
+      var dots = document.querySelectorAll('#hero-carousel .hero-dot');
+      var prevBtn = document.querySelector('#hero-carousel .hero-arrow-prev');
+      var nextBtn = document.querySelector('#hero-carousel .hero-arrow-next');
+      var current = 0;
+      var total = 3;
+      var autoTimer = null;
+
+      var delays = ['0s', '-11.1s', '-21s'];
+
+      function updateDots(index) {
+        dots.forEach(function(d, i) {
+          d.style.background = i === index ? '#C9A84C' : 'rgba(255,255,255,0.4)';
+        });
+      }
+
+      function resumeAnimation() {
+        wrapper.style.transition = 'none';
+        wrapper.style.animation = 'slideLoop 30s infinite';
+        wrapper.style.animationDelay = delays[current];
+        requestAnimationFrame(function() {
+          wrapper.style.transform = '';
+        });
+      }
+
+      function goToSlide(index) {
+        if (index < 0) index = total - 1;
+        if (index >= total) index = 0;
+        if (index === current) return;
+        current = index;
+        wrapper.style.animation = 'none';
+        wrapper.style.transition = 'transform 0.6s ease';
+        wrapper.style.transform = 'translateX(-' + (index * 33.333) + '%)';
+        updateDots(index);
+        clearTimeout(autoTimer);
+        autoTimer = setTimeout(resumeAnimation, 8000);
+      }
+
+      dots.forEach(function(dot){
+        dot.addEventListener('click', function(){
+          goToSlide(parseInt(this.getAttribute('data-slide')));
+        });
+      });
+
+      if (prevBtn) {
+        prevBtn.addEventListener('click', function(){ goToSlide(current - 1); });
+      }
+      if (nextBtn) {
+        nextBtn.addEventListener('click', function(){ goToSlide(current + 1); });
+      }
+    })();
+  </script>
+
+
+
+  <script>
+    (function(){
+      var cards = document.querySelectorAll('.spotlight-card');
+      var dots = document.querySelectorAll('.spotlight-dot');
+      var prevBtn = document.querySelector('.spotlight-arrow.prev');
+      var nextBtn = document.querySelector('.spotlight-arrow.next');
+      if (!cards.length) return;
+      var total = cards.length;
+      var current = 0;
+      var timer;
+      var isMoving = false;
+
+      function position(index) {
+        cards.forEach(function(card, i) {
+          var diff = (i - index + total) % total;
+          var cls;
+          if (diff === 0) cls = 'center';
+          else if (diff === 1) cls = 'right';
+          else if (diff === total - 1) cls = 'left';
+          else cls = 'hidden';
+          card.className = 'spotlight-card ' + cls;
+        });
+        dots.forEach(function(d, i) {
+          d.className = 'spotlight-dot' + (i === index ? ' active' : '');
+        });
+      }
+
+      function goTo(i) {
+        if (isMoving || i === current) return;
+        isMoving = true;
+        current = i;
+        position(i);
+        setTimeout(function(){ isMoving = false; }, 650);
+        if (timer) clearInterval(timer);
+        timer = setInterval(next, 6000);
+      }
+
+      function next() { goTo((current + 1) % total); }
+      function prev() { goTo((current - 1 + total) % total); }
+
+      cards.forEach(function(c) {
+        c.addEventListener('click', function(){ goTo(parseInt(this.getAttribute('data-index'))); });
+      });
+      dots.forEach(function(d) {
+        d.addEventListener('click', function(){ goTo(parseInt(this.getAttribute('data-slide'))); });
+      });
+      if (prevBtn) prevBtn.addEventListener('click', prev);
+      if (nextBtn) nextBtn.addEventListener('click', next);
+
+      position(0);
+      timer = setInterval(next, 6000);
+    })();
+  </script>
+  <script>
+    (function(){ var s=document.getElementById('skeleton-loader'); if(s){ s.style.transition='opacity 0.5s ease'; s.style.opacity='0'; setTimeout(function(){ s.style.display='none'; },600); } })();
+  </script>
+  <script>
+    var HAMBURGER_BTN = document.getElementById('hamburger-btn');
+    var MOBILE_MENU = document.getElementById('mobile-menu');
+    var CLOSE_BTN = document.getElementById('close-menu-btn');
+    var MENU_OPEN = false;
+    var SCROLL_Y = 0;
+
+    function openMobileMenu() {
+      if (!HAMBURGER_BTN || !MOBILE_MENU) return;
+      MENU_OPEN = true;
+      SCROLL_Y = window.scrollY;
+      HAMBURGER_BTN.classList.add('is-active');
+      HAMBURGER_BTN.setAttribute('aria-label', 'Close menu');
+      HAMBURGER_BTN.setAttribute('aria-expanded', 'true');
+      MOBILE_MENU.style.transform = 'translateX(0)';
+      document.body.style.position = 'fixed';
+      document.body.style.top = '-' + SCROLL_Y + 'px';
+      document.body.style.left = '0';
+      document.body.style.right = '0';
+      document.body.style.overflow = 'hidden';
+      if (CLOSE_BTN) setTimeout(function() { CLOSE_BTN.focus(); }, 100);
+    }
+
+    function closeMobileMenu() {
+      if (!HAMBURGER_BTN || !MOBILE_MENU) return;
+      MENU_OPEN = false;
+      HAMBURGER_BTN.classList.remove('is-active');
+      HAMBURGER_BTN.setAttribute('aria-label', 'Open menu');
+      HAMBURGER_BTN.setAttribute('aria-expanded', 'false');
+      MOBILE_MENU.style.transform = 'translateX(100%)';
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.left = '';
+      document.body.style.right = '';
+      document.body.style.overflow = '';
+      window.scrollTo(0, SCROLL_Y);
+      HAMBURGER_BTN.focus();
+    }
+
+    if (HAMBURGER_BTN) {
+      HAMBURGER_BTN.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (MENU_OPEN) closeMobileMenu(); else openMobileMenu();
+      });
+    }
+
+    if (CLOSE_BTN) {
+      CLOSE_BTN.addEventListener('click', function(e) {
+        e.stopPropagation();
+        closeMobileMenu();
+      });
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && MENU_OPEN) closeMobileMenu();
+    });
+  </script>
+  <script>
+    (function() {
+      var form = document.querySelector('#contact form');
+      if (!form) return;
+      form.addEventListener('submit', function(e) {
+        var valid = true;
+        var fields = [
+          { el: document.getElementById('contact-name'), error: form.querySelector('[data-error="contact-name"]'), validate: function(v) { return v.trim().length >= 2; } },
+          { el: document.getElementById('contact-email'), error: form.querySelector('[data-error="contact-email"]'), validate: function(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()); } },
+          { el: document.getElementById('contact-service'), error: form.querySelector('[data-error="contact-service"]'), validate: function(v) { return v && v !== ''; } },
+          { el: document.getElementById('contact-message'), error: form.querySelector('[data-error="contact-message"]'), validate: function(v) { return v.trim().length > 0; } }
+        ];
+        fields.forEach(function(f) {
+          var ok = f.validate(f.el.value);
+          f.el.classList.toggle('border-red-500', !ok);
+          if (f.error) f.error.classList.toggle('hidden', ok);
+          if (!ok) valid = false;
+        });
+        if (!valid) e.preventDefault();
+      });
+    })();
+  </script>
+  <script>
+    (function() {
+      var el = document.getElementById('contact-message');
+      var rem = document.getElementById('message-remaining-index');
+      if (el && rem) {
+        el.addEventListener('input', function() { rem.textContent = 2000 - el.value.length; });
+      }
+    })();
+  </script>
 </body>
 </html>

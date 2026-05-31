@@ -1,22 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <style>html{visibility:hidden;opacity:0;}</style>
+  <noscript><style>html{visibility:visible;opacity:1;}</style></noscript>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Get in touch with BIZCORE Consulting. Book a free consultation today." />
   <meta property="og:title" content="Contact | BIZCORE Consulting" />
   <meta property="og:description" content="Structured Finance. Sustainable Growth." />
+  <meta property="og:image" content="/src/assets/images/bizcore-logo.svg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Contact | BIZCORE Consulting" />
+  <meta name="twitter:description" content="Structured Finance. Sustainable Growth." />
+  <meta name="twitter:image" content="/src/assets/images/bizcore-logo.svg" />
+  <link rel="canonical" href="https://bizcoreconsulting.com/contact.html" />
   <title>Contact | BIZCORE Consulting</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Outfit:wght@400;500;600&family=DM+Sans:wght@400;500&family=JetBrains+Mono&display=swap">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Outfit:wght@400;500;600&family=DM+Sans:wght@400;500&family=JetBrains+Mono&display=swap" rel="stylesheet" />
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
-  <link href="assets/css/style.css" rel="stylesheet" />
-  <link href="assets/css/skeleton.css" rel="stylesheet" />
+<link rel="preload" as="script" href="/src/main.js">
+<script type="module" src="/src/main.js"></script>
   <style>
+    /* ─── Hamburger Menu ─── */
+    .hamburger-btn {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      padding: 6px;
+      gap: 5px;
+      background: transparent;
+      border: none;
+    }
+    @media (max-width: 1023px) {
+      .hamburger-btn { display: flex; }
+    }
+    .hamburger-line {
+      display: block;
+      width: 18px;
+      height: 2px;
+      background: white;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+      transform-origin: center;
+    }
+    .hamburger-btn.is-active .hamburger-line:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+    .hamburger-btn.is-active .hamburger-line:nth-child(2) {
+      opacity: 0;
+      transform: scaleX(0);
+    }
+    .hamburger-btn.is-active .hamburger-line:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+    .mobile-nav-link {
+      position: relative;
+    }
+    .mobile-nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      transform: translateX(-50%) scaleX(0);
+      width: 60%;
+      height: 2px;
+      background: #C9A84C;
+      border-radius: 1px;
+      transition: transform 0.25s ease;
+    }
+    .mobile-nav-link:hover::after {
+      transform: translateX(-50%) scaleX(1);
+    }
     .input.error { border-color: #f87171; }
     .input.valid { border-color: #4ade80; }
   </style>
 </head>
-<body style="opacity:0;">
+<body>
 
 <div id="skeleton-loader">
   <div class="sk-block sk-nav"></div>
@@ -36,64 +100,85 @@
 
   <nav class="fixed top-0 left-0 right-0 z-50 bg-brand-navy/95 backdrop-blur-sm border-b border-white/10">
     <div class="max-w-content mx-auto px-6 h-16 flex items-center justify-between">
-      <a href="index.html" class="font-display text-2xl font-bold text-white tracking-tight">BIZCORE</a>
+      <a href="/" class="inline-block align-middle">
+              <img src="/src/assets/images/bizcore-logo.svg" alt="BIZCORE" class="h-7 w-auto block" />
+            </a>
       <div class="hidden lg:flex items-center gap-8">
-        <a href="index.html" class="nav-link text-sm uppercase tracking-wider transition-colors duration-200 pb-1">Home</a>
-        <a href="services.html" class="nav-link text-sm uppercase tracking-wider transition-colors duration-200 pb-1">Services</a>
-        <a href="about.html" class="nav-link text-sm uppercase tracking-wider transition-colors duration-200 pb-1">About</a>
-        <a href="blog.html" class="nav-link text-sm uppercase tracking-wider transition-colors duration-200 pb-1">Blog</a>
-        <a href="contact.html" class="nav-link text-sm uppercase tracking-wider transition-colors duration-200 pb-1">Contact</a>
-        <a href="contact.html" class="btn-primary !py-2.5 !px-6">Book a Consultation</a>
+        <a href="/" class="nav-link text-sm uppercase tracking-wider transition-colors duration-200 pb-1">Home</a>
+        <a href="/services.html" class="nav-link text-sm uppercase tracking-wider transition-colors duration-200 pb-1">Services</a>
+        <a href="/about.html" class="nav-link text-sm uppercase tracking-wider transition-colors duration-200 pb-1">About</a>
+        <a href="/blog.html" class="nav-link text-sm uppercase tracking-wider transition-colors duration-200 pb-1">Blog</a>
+        <a href="/contact.html" class="nav-link text-sm uppercase tracking-wider transition-colors duration-200 pb-1" aria-current="page">Contact</a>
+        <a href="/contact.html" class="btn-primary !py-2.5 !px-6">Book a Consultation</a>
       </div>
-      <button id="hamburger-btn" class="lg:hidden text-white p-2" aria-label="Toggle menu"><i data-lucide="menu" class="w-6 h-6"></i></button>
-    </div>
-    <div id="mobile-menu" class="fixed inset-0 bg-brand-navy z-40 translate-x-full transition-transform duration-300 lg:hidden">
-      <div class="flex flex-col items-center justify-center h-full gap-8 text-lg">
-        <a href="index.html" class="text-white/80 hover:text-brand-gold transition-colors">Home</a>
-        <a href="services.html" class="text-white/80 hover:text-brand-gold transition-colors">Services</a>
-        <a href="about.html" class="text-white/80 hover:text-brand-gold transition-colors">About</a>
-        <a href="blog.html" class="text-white/80 hover:text-brand-gold transition-colors">Blog</a>
-        <a href="contact.html" class="text-white/80 hover:text-brand-gold transition-colors">Contact</a>
-        <a href="contact.html" class="btn-primary mt-4">Book a Consultation</a>
-      </div>
+      <button id="hamburger-btn" class="lg:hidden hamburger-btn" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
     </div>
   </nav>
+
+  <!-- Mobile Menu Overlay -->
+  <div id="mobile-menu" role="dialog" aria-modal="true" class="fixed inset-0 lg:hidden" style="background:#0D1B2A;z-index:1000;transform:translateX(100%);transition:transform 0.35s cubic-bezier(0.16,1,0.3,1);">
+    <div class="flex flex-col h-full px-6 py-6">
+      <div class="flex items-center justify-between flex-shrink-0">
+        <a href="/" class="inline-block align-middle">
+          <img src="/src/assets/images/bizcore-logo.svg" alt="BIZCORE" class="h-7 w-auto block" />
+        </a>
+        <button id="close-menu-btn" class="w-10 h-10 rounded-full flex items-center justify-center text-white/60 hover:text-white transition-all" aria-label="Close menu" style="background:transparent;touch-action:manipulation;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="pointer-events:none;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <nav class="flex flex-col items-center gap-6">
+        <a href="/" class="mobile-nav-link text-white/80 hover:text-brand-gold text-xl font-heading font-medium transition-all duration-200">Home</a>
+        <a href="/services.html" class="mobile-nav-link text-white/80 hover:text-brand-gold text-xl font-heading font-medium transition-all duration-200">Services</a>
+        <a href="/about.html" class="mobile-nav-link text-white/80 hover:text-brand-gold text-xl font-heading font-medium transition-all duration-200">About</a>
+        <a href="/blog.html" class="mobile-nav-link text-white/80 hover:text-brand-gold text-xl font-heading font-medium transition-all duration-200">Blog</a>
+        <a href="/contact.html" class="mobile-nav-link text-white/80 hover:text-brand-gold text-xl font-heading font-medium transition-all duration-200">Contact</a>
+      </nav>
+      <div style="margin-top:32px;">
+        <a href="/contact.html" class="btn-primary w-full text-center block">Book a Consultation</a>
+      </div>
+    </div>
+  </div>
 
   <main>
     <section class="bg-brand-navy pt-28 pb-16 px-6">
       <div class="container-content text-center">
-        <h1 class="font-display text-4xl md:text-5xl font-bold text-white mb-4 reveal">Get in Touch</h1>
-        <p class="text-white/60 text-lg max-w-xl mx-auto reveal">Ready to transform your business? Let's talk.</p>
+        <h1 class="display-hero text-white !mb-2 md:!mb-4 reveal">Get in Touch</h1>
+        <p class="text-white/60 text-lg max-w-xl mx-auto reveal"><span class="md:hidden">Ready to transform?</span><span class="hidden md:inline">Ready to transform your business? Let's talk.</span></p>
       </div>
     </section>
     <section class="section bg-white reveal">
       <div class="container-content">
         <div class="max-w-lg mx-auto">
-          <form class="space-y-5" novalidate>
+          <form class="space-y-5" id="contact-form" action="https://formspree.io/f/xykvljlz" method="POST" novalidate>
             <div>
-              <label>Full Name</label>
-              <input type="text" class="input" id="contact-name" required minlength="2" maxlength="100" />
+              <label for="contact-name">Full Name</label>
+              <input type="text" class="input" id="contact-name" name="name" required minlength="2" maxlength="100" placeholder="Your name" />
               <p class="text-red-400 text-xs mt-1 hidden" data-error="name">Please enter your name (at least 2 characters).</p>
             </div>
             <div>
-              <label>Email</label>
-              <input type="email" class="input" id="contact-email" required />
+              <label for="contact-email">Email</label>
+              <input type="email" class="input" id="contact-email" name="email" required placeholder="you@example.com" />
               <p class="text-red-400 text-xs mt-1 hidden" data-error="email">Please enter a valid email address.</p>
             </div>
             <div>
-              <label>Company</label>
-              <input type="text" class="input" id="contact-company" />
+              <label for="contact-company">Company</label>
+              <input type="text" class="input" id="contact-company" name="company" placeholder="Optional" />
             </div>
             <div>
-              <label>Message</label>
-              <textarea class="input" rows="5" id="contact-message" required minlength="20" maxlength="5000" aria-describedby="message-error message-counter"></textarea>
+              <label for="contact-message">Message</label>
+              <textarea class="input" rows="5" id="contact-message" name="message" required maxlength="2000" placeholder="Tell us about your project..." aria-describedby="message-error message-counter"></textarea>
               <div class="flex justify-between items-start">
-                <p class="text-red-400 text-xs mt-1 hidden" id="message-error" data-error="message">Please enter a message (at least 20 characters).</p>
-                <p class="text-white/40 text-xs mt-1" id="message-counter"><span id="message-remaining">5000</span>/5000 characters</p>
+                <p class="text-red-400 text-xs mt-1 hidden" id="message-error" data-error="message">Please enter a message.</p>
+                <p class="text-brand-muted text-xs mt-1" id="message-counter"><span id="message-remaining">2000</span>/2000 characters</p>
               </div>
             </div>
-            <p class="text-green-400 text-sm hidden" data-success></p>
-            <button type="submit" class="btn-primary w-full">Send Message</button>
+            <p class="text-green-400 text-sm hidden" id="form-success">Thanks for reaching out! We'll get back to you within 24 hours.</p>
+            <p class="text-red-400 text-sm hidden" id="form-error">Something went wrong. Please try again or email us directly.</p>
+            <button type="submit" class="btn-primary w-full" id="submit-btn">Send Message</button>
           </form>
         </div>
       </div>
@@ -104,16 +189,18 @@
     <div class="container-content">
       <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-10">
         <div>
-          <a href="index.html" class="font-display text-2xl font-bold text-white tracking-tight">BIZCORE</a>
+          <a href="/" class="inline-block align-middle">
+              <img src="/src/assets/images/bizcore-logo.svg" alt="BIZCORE" class="h-7 w-auto block" />
+            </a>
         </div>
         <div>
           <h4 class="font-heading text-sm font-semibold uppercase tracking-wider text-brand-gold mb-4">Quick Links</h4>
           <ul class="space-y-2">
-            <li><a href="index.html" class="text-white/60 hover:text-brand-gold text-sm transition-colors">Home</a></li>
-            <li><a href="services.html" class="text-white/60 hover:text-brand-gold text-sm transition-colors">Services</a></li>
-            <li><a href="about.html" class="text-white/60 hover:text-brand-gold text-sm transition-colors">About</a></li>
-            <li><a href="blog.html" class="text-white/60 hover:text-brand-gold text-sm transition-colors">Blog</a></li>
-            <li><a href="contact.html" class="text-white/60 hover:text-brand-gold text-sm transition-colors">Contact</a></li>
+            <li><a href="/" class="text-white/60 hover:text-brand-gold text-sm transition-colors">Home</a></li>
+            <li><a href="/services.html" class="text-white/60 hover:text-brand-gold text-sm transition-colors">Services</a></li>
+            <li><a href="/about.html" class="text-white/60 hover:text-brand-gold text-sm transition-colors">About</a></li>
+            <li><a href="/blog.html" class="text-white/60 hover:text-brand-gold text-sm transition-colors">Blog</a></li>
+            <li><a href="/contact.html" class="text-white/60 hover:text-brand-gold text-sm transition-colors">Contact</a></li>
           </ul>
         </div>
         <div>
@@ -127,11 +214,15 @@
         </div>
         <div>
           <h4 class="font-heading text-sm font-semibold uppercase tracking-wider text-brand-gold mb-4">Connect</h4>
-          <div class="flex gap-4">
-            <a href="#" class="footer-social-icon" aria-label="LinkedIn"><i data-lucide="linkedin" class="w-5 h-5 text-white/80"></i></a>
-            <a href="#" class="footer-social-icon" aria-label="Twitter"><i data-lucide="twitter" class="w-5 h-5 text-white/80"></i></a>
-            <a href="#" class="footer-social-icon" aria-label="Instagram"><i data-lucide="instagram" class="w-5 h-5 text-white/80"></i></a>
-            <a href="#" class="footer-social-icon" aria-label="WhatsApp"><i data-lucide="message-circle" class="w-5 h-5 text-white/80"></i></a>
+          <div class="footer-connect-container">
+            <a href="https://www.instagram.com/bizcore_consulting?igsh=OGxma2p1MnIybjl0&utm_source=qr" target="_blank" rel="noopener noreferrer" class="footer-social-icon" aria-label="Instagram">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+            <a href="https://www.tiktok.com/@bizcore_consulting?_r=1&_t=ZS-96h2eZPp2tZ" target="_blank" rel="noopener noreferrer" class="footer-social-icon" aria-label="TikTok">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+              </svg>
+            </a>
           </div>
         </div>
       </div>
@@ -142,104 +233,135 @@
   </footer>
 
   <script src="https://unpkg.com/lucide@latest"></script>
-  <script src="assets/js/skeleton.js"></script>
-  <script src="assets/js/main.js"></script>
-  <script>lucide.createIcons();</script>
+  <script>try { lucide.createIcons(); } catch (e) {}</script>
+  <script>
+    (function(){ var s=document.getElementById('skeleton-loader'); if(s){ s.style.transition='opacity 0.5s ease'; s.style.opacity='0'; setTimeout(function(){ s.style.display='none'; },600); } })();
+  </script>
   <script>
     (function() {
-      const form = document.querySelector('form');
-      const fields = form.querySelectorAll('[required]');
-      const nameError = document.querySelector('[data-error="name"]');
-      const emailError = document.querySelector('[data-error="email"]');
-      const messageError = document.querySelector('#message-error');
-      const successMsg = document.querySelector('[data-success]');
-      const messageField = document.getElementById('contact-message');
-      const remainingSpan = document.getElementById('message-remaining');
+      var btn = document.getElementById('hamburger-btn');
+      var menu = document.getElementById('mobile-menu');
+      var closeBtn = document.getElementById('close-menu-btn');
+      var scrollY = 0;
+      var isOpen = false;
 
-      function updateCharCounter() {
-        if (!messageField || !remainingSpan) return;
-        const remaining = 5000 - messageField.value.length;
-        remainingSpan.textContent = remaining;
-        remainingSpan.style.color = remaining < 20 ? '#f87171' : remaining < 100 ? '#fbbf24' : '';
+      function openMenu() {
+        isOpen = true;
+        scrollY = window.scrollY;
+        btn.classList.add('is-active');
+        btn.setAttribute('aria-label', 'Close menu');
+        btn.setAttribute('aria-expanded', 'true');
+        menu.style.transform = 'translateX(0)';
+        document.body.style.position = 'fixed';
+        document.body.style.top = '-' + scrollY + 'px';
+        document.body.style.left = '0';
+        document.body.style.right = '0';
+        document.body.style.overflow = 'hidden';
+        setTimeout(function() { if (closeBtn) closeBtn.focus(); }, 100);
       }
 
-      if (messageField) {
-        messageField.addEventListener('input', updateCharCounter);
-      }
-
-      function setAriaInvalid(field, invalid) {
-        field.setAttribute('aria-invalid', invalid.toString());
-      }
-
-      function validateField(field) {
-        const id = field.id;
-        let errorEl = null;
-        if (id === 'contact-name') errorEl = nameError;
-        else if (id === 'contact-email') errorEl = emailError;
-        else if (id === 'contact-message') errorEl = messageError;
-
-        let valid = true;
-        let msg = '';
-
-        if (field.hasAttribute('required') && !field.value.trim()) {
-          valid = false;
-          msg = id === 'contact-name' ? 'Please enter your name (at least 2 characters).' : id === 'contact-email' ? 'Please enter a valid email address.' : 'Please enter a message (at least 20 characters).';
-        } else if (field.type === 'email' && field.value.trim()) {
-          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-          if (!emailRegex.test(field.value.trim())) {
-            valid = false;
-            msg = 'Please enter a valid email address.';
-          }
-        } else if (id === 'contact-name' && field.value.trim() && field.value.trim().length < 2) {
-          valid = false;
-          msg = 'Name must be at least 2 characters.';
-        } else if (id === 'contact-message' && field.value.trim() && field.value.trim().length < 20) {
-          valid = false;
-          msg = 'Message must be at least 20 characters.';
+      function closeMenu() {
+        isOpen = false;
+        if (btn) {
+          btn.classList.remove('is-active');
+          btn.setAttribute('aria-label', 'Open menu');
+          btn.setAttribute('aria-expanded', 'false');
+          btn.focus();
         }
-
-        if (errorEl) {
-          if (!valid) {
-            errorEl.textContent = msg;
-            errorEl.classList.remove('hidden');
-          } else {
-            errorEl.classList.add('hidden');
-          }
-        }
-        field.classList.toggle('error', !valid && field.value.trim() !== '');
-        field.classList.toggle('valid', valid && field.value.trim() !== '');
-        setAriaInvalid(field, !valid && field.value.trim() !== '');
-        return valid;
+        if (menu) menu.style.transform = 'translateX(100%)';
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.left = '';
+        document.body.style.right = '';
+        document.body.style.overflow = '';
+        if (scrollY) window.scrollTo(0, scrollY);
       }
 
-      fields.forEach(function(field) {
-        setAriaInvalid(field, false);
-        field.addEventListener('input', function() {
-          validateField(field);
-          if (successMsg) successMsg.classList.add('hidden');
+      if (btn && menu) {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          if (isOpen) { closeMenu(); }
+          else { openMenu(); }
         });
-        field.addEventListener('blur', function() {
-          validateField(field);
+
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape' && isOpen) closeMenu();
         });
+      }
+      if (closeBtn) {
+        closeBtn.addEventListener('click', function(e) { e.stopPropagation(); closeMenu(); });
+      }
+    })();
+  </script>
+  <script>
+    (function() {
+      var form = document.getElementById('contact-form');
+      if (!form) return;
+
+      var fields = [
+        { el: document.getElementById('contact-name'), error: document.querySelector('[data-error="name"]'), validate: function(v) { return v.trim().length >= 2; } },
+        { el: document.getElementById('contact-email'), error: document.querySelector('[data-error="email"]'), validate: function(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()); } },
+        { el: document.getElementById('contact-message'), error: document.querySelector('[data-error="message"]'), validate: function(v) { return v.trim().length > 0; } }
+      ];
+
+      function validateField(f) {
+        var ok = f.validate(f.el.value);
+        f.el.classList.toggle('error', !ok);
+        f.el.classList.toggle('valid', ok);
+        if (f.error) f.error.classList.toggle('hidden', ok);
+        return ok;
+      }
+
+      fields.forEach(function(f) {
+        f.el.addEventListener('blur', function() { validateField(f); });
       });
+
+      var messageEl = document.getElementById('contact-message');
+      var remainingEl = document.getElementById('message-remaining');
+      if (messageEl && remainingEl) {
+        messageEl.addEventListener('input', function() {
+          remainingEl.textContent = 2000 - messageEl.value.length;
+        });
+      }
 
       form.addEventListener('submit', function(e) {
         e.preventDefault();
-        let allValid = true;
-        fields.forEach(function(field) {
-          if (!validateField(field)) allValid = false;
-        });
 
-        if (allValid && successMsg) {
-          successMsg.textContent = 'Thank you! We\'ll be in touch within 24 hours.';
-          successMsg.classList.remove('hidden');
-          form.reset();
-          fields.forEach(function(f) {
-            f.classList.remove('valid', 'error');
-            setAriaInvalid(f, false);
-          });
-          updateCharCounter();
-        }
+        var valid = true;
+        fields.forEach(function(f) {
+          if (!validateField(f)) valid = false;
+        });
+        if (!valid) return;
+
+        var submitBtn = document.getElementById('submit-btn');
+        var formSuccess = document.getElementById('form-success');
+        var formError = document.getElementById('form-error');
+        var originalText = submitBtn.textContent;
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending...';
+        formSuccess.classList.add('hidden');
+        formError.classList.add('hidden');
+
+        var data = new FormData(form);
+        fetch(form.action, {
+          method: 'POST',
+          body: data,
+          headers: { Accept: 'application/json' }
+        }).then(function(res) {
+          if (res.ok) {
+            formSuccess.classList.remove('hidden');
+            form.reset();
+            fields.forEach(function(f) { f.el.classList.remove('valid', 'error'); });
+          } else {
+            formError.classList.remove('hidden');
+          }
+        }).catch(function() {
+          formError.classList.remove('hidden');
+        }).finally(function() {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalText;
+        });
       });
     })();
   </script>
