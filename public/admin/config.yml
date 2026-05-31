@@ -2,7 +2,7 @@ backend:
   name: github
   repo: Pearlyport9/bizcore-consulting
   branch: main
-  base_url: https://api.netlify.com
+  base_url: https://unique-cupcake-03e19c.netlify.app
   auth_endpoint: auth
 # Where uploaded media (images) get stored in the repo
 media_folder: "public/assets/blog-images"
