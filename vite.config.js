@@ -13,7 +13,8 @@ export default {
         about: resolve(__dirname, "about.html"),
         blog: resolve(__dirname, "blog.html"),
         "blog-post": resolve(__dirname, "blog-post.html"),
-        contact: resolve(__dirname, "contact.html")
+        contact: resolve(__dirname, "contact.html"),
+        admin: resolve(__dirname, "admin.html")
       }
     }
   }

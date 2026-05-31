@@ -2,5 +2,9 @@
   "buildCommand": "npx vite build",
   "outputDirectory": "dist",
   "installCommand": "npm install",
-  "framework": null
+  "framework": null,
+  "rewrites": [
+    { "source": "/admin.html", "destination": "/404.html" },
+    { "source": "/src/admin.html", "destination": "/404.html" }
+  ]
 }
