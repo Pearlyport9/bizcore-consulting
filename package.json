@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/generate-posts.js && vite build && node scripts/copy-admin.js",
+    "build": "node scripts/generate-posts.js && vite build",
     "generate": "node scripts/generate-posts.js",
     "prebuild": "npm run generate",
     "preview": "vite preview"
