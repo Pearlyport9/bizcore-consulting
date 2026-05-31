@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel | BIZCORE Consulting</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy: #0D1B2A;
+    --gold: #C9A84C;
+    --gold-hover: #b8962e;
+    --off-white: #F8F8F6;
+    --text: #1a1a2e;
+    --muted: #6b7280;
+    --success: #10b981;
+    --error: #ef4444;
+    --border: #e5e7eb;
+    --radius: 10px;
+  }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--off-white);
+    color: var(--text);
+    min-height: 100vh;
+  }
+  h1, h2, h3, h4 { font-family: 'Outfit', sans-serif; }
+  .header {
+    background: var(--navy);
+    color: white;
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .header h1 { font-size: 20px; font-weight: 700; letter-spacing: -0.5px; }
+  .header .subtitle { color: rgba(255,255,255,0.6); font-size: 13px; }
+  .header .actions { display: flex; gap: 12px; align-items: center; }
+  .header a { color: rgba(255,255,255,0.6); font-size: 13px; text-decoration: none; transition: color 0.2s; }
+  .header a:hover { color: var(--gold); }
+  .btn-logout { background: none; border: 1px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.7); padding: 6px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; transition: all 0.2s; }
+  .btn-logout:hover { border-color: var(--error); color: var(--error); }
+  .container { max-width: 1100px; margin: 0 auto; padding: 32px 24px; }
+  .login-screen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .login-card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 40px 32px;
+    max-width: 380px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+  }
+  .login-card h1 { font-size: 24px; color: var(--navy); margin-bottom: 4px; }
+  .login-card p { color: var(--muted); font-size: 14px; margin-bottom: 24px; }
+  .login-card input { width: 100%; padding: 12px 16px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; margin-bottom: 12px; outline: none; font-family: inherit; }
+  .login-card input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,168,76,0.15); }
+  .login-error { color: var(--error); font-size: 13px; margin-bottom: 12px; display: none; }
+  .btn-primary {
+    background: var(--gold);
+    color: var(--navy);
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-family: inherit;
+  }
+  .btn-primary:hover { background: var(--gold-hover); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-secondary {
+    background: white;
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+  .btn-secondary:hover { background: #f3f4f6; }
+  .btn-danger {
+    background: var(--error);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 13px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    font-family: inherit;
+  }
+  .btn-danger:hover { opacity: 0.9; }
+  .dashboard { display: none; }
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .stat-card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+  .stat-card .num { font-size: 28px; font-weight: 700; font-family: 'Outfit', sans-serif; }
+  .stat-card .label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); margin-top: 4px; }
+  .toolbar {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .toolbar input {
+    flex: 1;
+    min-width: 200px;
+    padding: 10px 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    font-family: inherit;
+  }
+  .toolbar input:focus { border-color: var(--gold); }
+  .post-table {
+    background: white;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+  .post-table table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .post-table th {
+    background: #f9fafb;
+    text-align: left;
+    padding: 12px 16px;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+  }
+  .post-table td { padding: 12px 16px; border-top: 1px solid var(--border); }
+  .post-table tr:hover td { background: #fafaf8; }
+  .post-table .actions { display: flex; gap: 8px; }
+  .post-table .actions button {
+    background: none;
+    border: none;
+    font-size: 13px;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+  .post-table .actions .edit-btn { color: var(--gold); }
+  .post-table .actions .edit-btn:hover { background: rgba(201,168,76,0.1); }
+  .post-table .actions .del-btn { color: var(--error); }
+  .post-table .actions .del-btn:hover { background: rgba(239,68,68,0.1); }
+  .badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+  .badge-yes { background: #d1fae5; color: #065f46; }
+  .badge-no { background: #f3f4f6; color: var(--muted); }
+  .empty-state { padding: 48px 24px; text-align: center; color: var(--muted); }
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 100;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 32px 16px;
+    overflow-y: auto;
+  }
+  .modal-overlay.active { display: flex; }
+  .modal {
+    background: white;
+    border-radius: 16px;
+    padding: 32px;
+    width: 100%;
+    max-width: 700px;
+    position: relative;
+    margin-top: 16px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  }
+  .modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: var(--muted);
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+  }
+  .modal-close:hover { background: #f3f4f6; }
+  .modal h2 { font-size: 22px; color: var(--navy); margin-bottom: 24px; }
+  .form-group { margin-bottom: 16px; }
+  .form-group label { display: block; font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 6px; font-family: 'Outfit', sans-serif; }
+  .form-group label .hint { font-weight: 400; color: var(--muted); font-size: 11px; font-family: 'DM Sans', sans-serif; }
+  .form-group input, .form-group select, .form-group textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    font-family: inherit;
+    transition: border-color 0.2s;
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,168,76,0.1); }
+  .form-group textarea { resize: vertical; min-height: 80px; }
+  .form-group .body-field { min-height: 200px; line-height: 1.6; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-group .checkbox-label { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+  .form-group .checkbox-label input { width: auto; }
+  .modal-footer {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    margin-top: 8px;
+  }
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    padding: 14px 24px;
+    border-radius: 10px;
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 200;
+    display: none;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+    animation: slideUp 0.3s ease;
+  }
+  .toast.show { display: block; }
+  .toast.success { background: var(--success); }
+  .toast.error { background: var(--error); }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  .hidden { display: none !important; }
+  @media (max-width: 640px) {
+    .stats { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    .container { padding: 16px 12px; }
+    .modal { padding: 20px; }
+    .header { padding: 12px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="login-screen" id="loginScreen">
+  <div class="login-card">
+    <h1>Admin Panel</h1>
+    <p>BIZCORE Consulting</p>
+    <input type="password" id="passwordInput" placeholder="Password" autocomplete="off" />
+    <p class="login-error" id="loginError">Incorrect password</p>
+    <button class="btn-primary" id="loginBtn" style="width:100%">Sign In</button>
+  </div>
+</div>
+
+<div class="dashboard" id="dashboard">
+  <div class="header">
+    <div><h1>BIZCORE <span class="subtitle">| Admin Panel</span></h1></div>
+    <div class="actions">
+      <a href="/" target="_blank">View Site →</a>
+      <button class="btn-logout" id="logoutBtn">Logout</button>
+    </div>
+  </div>
+  <div class="container">
+    <div class="stats">
+      <div class="stat-card"><div class="num" id="statTotal">0</div><div class="label">Total Posts</div></div>
+      <div class="stat-card"><div class="num" id="statFeatured" style="color:var(--gold)">0</div><div class="label">Featured</div></div>
+      <div class="stat-card"><div class="num" id="statDrafts" style="color:var(--muted)">0</div><div class="label">Drafts</div></div>
+    </div>
+    <div class="toolbar">
+      <input type="text" id="searchInput" placeholder="Search by title..." />
+      <button class="btn-primary" id="newPostBtn">+ New Post</button>
+    </div>
+    <div class="post-table">
+      <table>
+        <thead><tr>
+          <th>Title</th>
+          <th style="width:130px">Category</th>
+          <th style="width:110px">Date</th>
+          <th style="width:80px">Featured</th>
+          <th style="width:140px">Actions</th>
+        </tr></thead>
+        <tbody id="postsBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="editorOverlay">
+  <div class="modal">
+    <button class="modal-close" id="closeEditor">&times;</button>
+    <h2 id="editorTitle">New Post</h2>
+    <form id="postForm">
+      <input type="hidden" id="editOriginalFile" />
+      <div class="form-row">
+        <div class="form-group">
+          <label>Title</label>
+          <input type="text" id="postTitle" required />
+        </div>
+        <div class="form-group">
+          <label>Slug <span class="hint">(auto-generated from title)</span></label>
+          <input type="text" id="postSlug" required placeholder="e.g. my-post-title" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Excerpt <span class="hint">(1-2 sentences)</span></label>
+        <textarea id="postExcerpt" required></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Category</label>
+          <select id="postCategory">
+            <option value="">Select...</option>
+            <option>Finance</option>
+            <option>Strategy</option>
+            <option>Data & Analytics</option>
+            <option>Market Research</option>
+            <option>Startups</option>
+            <option>SME Tips</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Tags <span class="hint">(comma-separated)</span></label>
+          <input type="text" id="postTags" placeholder="e.g. finance, sme, growth" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Cover Image URL</label>
+          <input type="text" id="postCover" placeholder="/assets/blog-images/..." />
+        </div>
+        <div class="form-group">
+          <label>Date</label>
+          <input type="datetime-local" id="postDate" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Author</label>
+          <input type="text" id="postAuthor" value="BIZCORE Team" />
+        </div>
+        <div class="form-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="postFeatured" />
+            Featured post
+          </label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Body <span class="hint">(markdown supported)</span></label>
+        <textarea class="body-field" id="postBody" placeholder="Write your post content in markdown..."></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" id="cancelEditor">Cancel</button>
+        <button type="button" class="btn-danger hidden" id="deletePostBtn">Delete</button>
+        <button type="submit" class="btn-primary" id="savePostBtn">Save Post</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const PASSWORD = 'bizcore2026';
+let posts = [];
+let searchQuery = '';
+const BLOG_FOLDER = 'content/blog/';
+
+function getSlug(title) {
+  return title.toLowerCase()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/[\s_]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .substring(0, 80) || 'untitled';
+}
+
+function formatDate(iso) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+}
+
+function formatDateInput(iso) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  const pad = n => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
+function parseFrontmatter(text) {
+  const match = text.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+  if (!match) return null;
+  const raw = match[1];
+  const body = match[2].trim();
+  const meta = {};
+  const lines = raw.split('\n');
+  let currentKey = null;
+  let currentVal = '';
+  for (const line of lines) {
+    const kv = line.match(/^(\w+):\s*(.*)/);
+    if (kv) {
+      if (currentKey) meta[currentKey] = parseValue(currentVal.trim());
+      currentKey = kv[1];
+      currentVal = kv[2];
+    } else if (currentKey) {
+      currentVal += '\n' + line;
+    }
+  }
+  if (currentKey) meta[currentKey] = parseValue(currentVal.trim());
+  return { meta, body };
+}
+
+function parseValue(val) {
+  if (val === 'true') return true;
+  if (val === 'false') return false;
+  if (val === '') return '';
+  if (val.startsWith('[') && val.endsWith(']')) {
+    try { return JSON.parse(val.replace(/'/g, '"')); } catch { return val; }
+  }
+  if (!isNaN(val) && val !== '') return Number(val);
+  return val;
+}
+
+function toFrontmatter(meta) {
+  let out = '---\n';
+  for (const [k, v] of Object.entries(meta)) {
+    if (v === true) out += `${k}: true\n`;
+    else if (v === false) out += `${k}: false\n`;
+    else if (Array.isArray(v)) out += `${k}: ${JSON.stringify(v)}\n`;
+    else if (typeof v === 'string' && (v.includes(':') || v.includes('#'))) out += `${k}: "${v}"\n`;
+    else out += `${k}: ${v}\n`;
+  }
+  out += '---\n';
+  return out;
+}
+
+async function loadPosts() {
+  try {
+    const resp = await fetch('/content/blog/');
+    if (!resp.ok) { posts = []; renderTable(); return; }
+    const html = await resp.text();
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    const links = [...doc.querySelectorAll('a')];
+    const mdFiles = links.map(a => a.textContent).filter(f => f.endsWith('.md'));
+    posts = [];
+    for (const file of mdFiles) {
+      try {
+        const fileResp = await fetch(`${BLOG_FOLDER}${file}`);
+        if (!fileResp.ok) continue;
+        const text = await fileResp.text();
+        const parsed = parseFrontmatter(text);
+        if (!parsed) continue;
+        posts.push({ file, ...parsed.meta, body: parsed.body });
+      } catch {}
+    }
+  } catch {
+    posts = [];
+  }
+  renderTable();
+}
+
+async function savePostToFile(meta, body, originalFile) {
+  const frontmatter = toFrontmatter(meta);
+  const content = frontmatter + body + '\n';
+  const slug = meta.slug || getSlug(meta.title);
+  const filename = `${slug}.md`;
+  const blob = new Blob([content], { type: 'text/markdown' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  if (originalFile && originalFile !== filename) {
+    const msg = `Original file "${originalFile}" needs to be deleted manually. New file "${filename}" has been downloaded.`;
+    showToast(msg, 'success');
+  } else {
+    showToast(`"${filename}" downloaded. Place it in ${BLOG_FOLDER} and refresh.`, 'success');
+  }
+  closeEditor();
+  setTimeout(loadPosts, 1000);
+}
+
+function renderTable() {
+  const q = searchQuery.toLowerCase();
+  const filtered = posts.filter(p => !q || (p.title && p.title.toLowerCase().includes(q)));
+  document.getElementById('statTotal').textContent = posts.length;
+  document.getElementById('statFeatured').textContent = posts.filter(p => p.featured === true).length;
+  document.getElementById('statDrafts').textContent = posts.filter(p => p.featured !== true).length;
+  const tbody = document.getElementById('postsBody');
+  if (!filtered.length) {
+    tbody.innerHTML = `<tr><td colspan="5" class="empty-state">${posts.length === 0 ? 'No posts yet. Create your first post!' : 'No posts match your search.'}</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = filtered.map((p, i) => `
+    <tr>
+      <td><strong style="font-family:'Outfit',sans-serif">${escHtml(p.title || 'Untitled')}</strong></td>
+      <td><span class="badge badge-no">${escHtml(p.category || 'Uncategorized')}</span></td>
+      <td style="color:var(--muted);font-size:13px">${p.date ? formatDate(p.date) : '—'}</td>
+      <td><span class="badge ${p.featured ? 'badge-yes' : 'badge-no'}">${p.featured ? 'Yes' : 'No'}</span></td>
+      <td class="actions">
+        <button class="edit-btn" data-file="${p.file}">Edit</button>
+        <button class="del-btn" data-file="${p.file}">Delete</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function escHtml(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+function showToast(msg, type = 'success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + type + ' show';
+  clearTimeout(t._hide);
+  t._hide = setTimeout(() => t.classList.remove('show'), 4000);
+}
+
+// Login
+document.getElementById('loginBtn').addEventListener('click', () => {
+  const val = document.getElementById('passwordInput').value;
+  if (val === PASSWORD) {
+    sessionStorage.setItem('bizcore_admin', 'true');
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+    loadPosts();
+  } else {
+    document.getElementById('loginError').style.display = 'block';
+  }
+});
+document.getElementById('passwordInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') document.getElementById('loginBtn').click();
+});
+
+// Logout
+document.getElementById('logoutBtn').addEventListener('click', () => {
+  sessionStorage.removeItem('bizcore_admin');
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('passwordInput').value = '';
+  document.getElementById('loginError').style.display = 'none';
+});
+
+// Search
+document.getElementById('searchInput').addEventListener('input', e => {
+  searchQuery = e.target.value;
+  renderTable();
+});
+
+// Check session
+if (sessionStorage.getItem('bizcore_admin') === 'true') {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
+  loadPosts();
+}
+
+function openEditor(post = null) {
+  document.getElementById('editorTitle').textContent = post ? 'Edit Post' : 'New Post';
+  document.getElementById('editOriginalFile').value = post ? post.file : '';
+  document.getElementById('postTitle').value = post ? post.title || '' : '';
+  document.getElementById('postSlug').value = post ? post.slug || '' : '';
+  document.getElementById('postExcerpt').value = post ? post.excerpt || '' : '';
+  document.getElementById('postCategory').value = post ? post.category || '' : '';
+  document.getElementById('postCover').value = post ? post.cover_image || '' : '';
+  document.getElementById('postDate').value = post ? formatDateInput(post.date) : '';
+  document.getElementById('postAuthor').value = post ? post.author || 'BIZCORE Team' : 'BIZCORE Team';
+  document.getElementById('postFeatured').checked = post ? post.featured === true : false;
+  document.getElementById('postTags').value = post && post.tags ? (Array.isArray(post.tags) ? post.tags.join(', ') : post.tags) : '';
+  document.getElementById('postBody').value = post ? post.body || '' : '';
+  const deleteBtn = document.getElementById('deletePostBtn');
+  if (post) { deleteBtn.classList.remove('hidden'); deleteBtn.dataset.file = post.file; }
+  else deleteBtn.classList.add('hidden');
+  document.getElementById('editorOverlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeEditor() {
+  document.getElementById('editorOverlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('newPostBtn').addEventListener('click', () => openEditor(null));
+document.getElementById('closeEditor').addEventListener('click', closeEditor);
+document.getElementById('cancelEditor').addEventListener('click', closeEditor);
+
+// Auto-slug from title
+document.getElementById('postTitle').addEventListener('input', function() {
+  const slugField = document.getElementById('postSlug');
+  if (!slugField.dataset.manual) {
+    slugField.value = getSlug(this.value);
+  }
+});
+document.getElementById('postSlug').addEventListener('input', function() {
+  this.dataset.manual = this.value.length > 0;
+});
+
+// Post form save
+document.getElementById('postForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const meta = {
+    title: document.getElementById('postTitle').value.trim(),
+    slug: document.getElementById('postSlug').value.trim() || getSlug(document.getElementById('postTitle').value),
+    date: document.getElementById('postDate').value ? new Date(document.getElementById('postDate').value).toISOString() : new Date().toISOString(),
+    author: document.getElementById('postAuthor').value.trim() || 'BIZCORE Team',
+    excerpt: document.getElementById('postExcerpt').value.trim(),
+    category: document.getElementById('postCategory').value,
+    cover_image: document.getElementById('postCover').value.trim() || undefined,
+    tags: document.getElementById('postTags').value.trim() ? document.getElementById('postTags').value.split(/\s*,\s*/).map(t => t.trim()).filter(Boolean) : undefined,
+    featured: document.getElementById('postFeatured').checked
+  };
+  const body = document.getElementById('postBody').value;
+  if (!meta.title) { showToast('Title is required', 'error'); return; }
+  if (!meta.excerpt) { showToast('Excerpt is required', 'error'); return; }
+  if (!meta.category) { showToast('Category is required', 'error'); return; }
+  const originalFile = document.getElementById('editOriginalFile').value;
+  savePostToFile(meta, body, originalFile);
+});
+
+// Delete post
+document.getElementById('deletePostBtn').addEventListener('click', function() {
+  const file = this.dataset.file;
+  if (!file) return;
+  if (confirm(`Delete "${file}"? This cannot be undone via this admin.`)) {
+    showToast(`"${file}" needs to be deleted manually from ${BLOG_FOLDER}.`, 'success');
+    closeEditor();
+  }
+});
+
+// Table action delegation
+document.getElementById('postsBody').addEventListener('click', e => {
+  const btn = e.target.closest('button');
+  if (!btn) return;
+  const file = btn.dataset.file;
+  const post = posts.find(p => p.file === file);
+  if (btn.classList.contains('edit-btn') && post) openEditor(post);
+  if (btn.classList.contains('del-btn') && post) {
+    if (confirm(`Delete "${post.title || file}"? Delete the file manually from ${BLOG_FOLDER}.`)) {
+      showToast(`Delete "${file}" manually from ${BLOG_FOLDER} and refresh.`, 'success');
+    }
+  }
+});
+</script>
+</body>
+</html>
