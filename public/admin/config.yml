@@ -4,6 +4,7 @@ backend:
   branch: main
   base_url: https://unique-cupcake-03e19c.netlify.app
   auth_endpoint: auth
+  auth_scope: repo
 # Where uploaded media (images) get stored in the repo
 media_folder: "public/assets/blog-images"
 # Public URL path for images (what gets used in markdown)
