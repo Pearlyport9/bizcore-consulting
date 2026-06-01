@@ -727,7 +727,7 @@
             Share your challenge<br>
             and get a response in 24h.
           </p>
-          <form class="space-y-6 text-left" novalidate>
+          <form class="space-y-6 text-left" action="https://formspree.io/f/xykvljlz" method="POST" novalidate>
             <div class="grid sm:grid-cols-2 gap-6">
               <div>
                 <label class="block text-sm font-heading font-semibold text-brand-navy mb-1.5" for="contact-name">Full Name</label>
@@ -989,21 +989,56 @@
     (function() {
       var form = document.querySelector('#contact form');
       if (!form) return;
+
+      var fields = [
+        { el: document.getElementById('contact-name'), error: form.querySelector('[data-error="contact-name"]'), validate: function(v) { return v.trim().length >= 2; } },
+        { el: document.getElementById('contact-email'), error: form.querySelector('[data-error="contact-email"]'), validate: function(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()); } },
+        { el: document.getElementById('contact-service'), error: form.querySelector('[data-error="contact-service"]'), validate: function(v) { return v && v !== ''; } },
+        { el: document.getElementById('contact-message'), error: form.querySelector('[data-error="contact-message"]'), validate: function(v) { return v.trim().length > 0; } }
+      ];
+
+      function validateField(f) {
+        var ok = f.validate(f.el.value);
+        f.el.classList.toggle('error', !ok);
+        f.el.classList.toggle('valid', ok);
+        if (f.error) f.error.classList.toggle('hidden', ok);
+        return ok;
+      }
+
+      fields.forEach(function(f) {
+        f.el.addEventListener('blur', function() { validateField(f); });
+      });
+
       form.addEventListener('submit', function(e) {
+        e.preventDefault();
         var valid = true;
-        var fields = [
-          { el: document.getElementById('contact-name'), error: form.querySelector('[data-error="contact-name"]'), validate: function(v) { return v.trim().length >= 2; } },
-          { el: document.getElementById('contact-email'), error: form.querySelector('[data-error="contact-email"]'), validate: function(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()); } },
-          { el: document.getElementById('contact-service'), error: form.querySelector('[data-error="contact-service"]'), validate: function(v) { return v && v !== ''; } },
-          { el: document.getElementById('contact-message'), error: form.querySelector('[data-error="contact-message"]'), validate: function(v) { return v.trim().length > 0; } }
-        ];
         fields.forEach(function(f) {
-          var ok = f.validate(f.el.value);
-          f.el.classList.toggle('border-red-500', !ok);
-          if (f.error) f.error.classList.toggle('hidden', ok);
-          if (!ok) valid = false;
+          if (!validateField(f)) valid = false;
         });
-        if (!valid) e.preventDefault();
+        if (!valid) return;
+
+        var submitBtn = form.querySelector('button[type="submit"]');
+        var formSuccess = form.querySelector('[data-success]');
+        var originalText = submitBtn.textContent;
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending...';
+        if (formSuccess) formSuccess.classList.add('hidden');
+
+        var data = new FormData(form);
+        fetch(form.action, {
+          method: 'POST',
+          body: data,
+          headers: { Accept: 'application/json' }
+        }).then(function(res) {
+          if (res.ok) {
+            if (formSuccess) formSuccess.classList.remove('hidden');
+            form.reset();
+            fields.forEach(function(f) { f.el.classList.remove('error', 'valid'); });
+          }
+        }).finally(function() {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalText;
+        });
       });
     })();
   </script>

@@ -161,6 +161,9 @@
     box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.15);
   }
 
+  .input.error { border-color: #f87171; }
+  .input.valid { border-color: #4ade80; }
+
   select.input {
     appearance: none;
     -webkit-appearance: none;
