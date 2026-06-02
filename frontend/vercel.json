@@ -1,0 +1,9 @@
+{
+  "buildCommand": "node scripts/generate-posts.js && npx vite build",
+  "outputDirectory": "dist",
+  "installCommand": "npm install",
+  "framework": null,
+  "rewrites": [
+    { "source": "/admin", "destination": "/admin/index.html" }
+  ]
+}

@@ -230,7 +230,7 @@
   .form-group { margin-bottom: 16px; }
   .form-group label { display: block; font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 6px; font-family: 'Outfit', sans-serif; }
   .form-group label .hint { font-weight: 400; color: var(--muted); font-size: 11px; font-family: 'DM Sans', sans-serif; }
-  .form-group input, .form-group select, .form-group textarea {
+  .form-group input, .form-group select, .form-group textarea, .body-field {
     width: 100%;
     padding: 10px 14px;
     border: 1px solid var(--border);
@@ -240,8 +240,37 @@
     font-family: inherit;
     transition: border-color 0.2s;
   }
-  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,168,76,0.1); }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus, .body-field:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,168,76,0.1); }
   .form-group textarea { resize: vertical; min-height: 80px; }
+  .editor-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .editor-toolbar button {
+    border: 1px solid var(--border);
+    background: white;
+    color: var(--text);
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+    font-family: inherit;
+  }
+  .editor-toolbar button:hover {
+    border-color: var(--gold);
+    background: #fff8e7;
+  }
+  .editor-body {
+    min-height: 220px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+  }
+  .editor-body[contenteditable="true"] {
+    outline: none;
+  }
+  .hidden { display: none !important; }
   .form-group .body-field { min-height: 200px; line-height: 1.6; }
   .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   .form-group .checkbox-label { display: flex; align-items: center; gap: 10px; cursor: pointer; }
@@ -273,6 +302,18 @@
   .toast.error { background: var(--error); }
   @keyframes slideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
   .hidden { display: none !important; }
+  .dropzone {
+    border: 2px dashed var(--border);
+    border-radius: 8px;
+    padding: 18px;
+    text-align: center;
+    cursor: pointer;
+    background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(250,250,250,0.6));
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .dropzone.dragover { border-color: var(--gold); box-shadow: 0 6px 20px rgba(201,168,76,0.08); }
+  .dropzone input[type=file] { display: none; }
   @media (max-width: 640px) {
     .stats { grid-template-columns: 1fr; }
     .form-row { grid-template-columns: 1fr; }
@@ -284,12 +325,13 @@
 </head>
 <body>
 
-<div class="login-screen" id="loginScreen">
+  <div class="login-screen" id="loginScreen">
   <div class="login-card">
     <h1>Admin Panel</h1>
     <p>BIZCORE Consulting</p>
+    <input type="email" id="emailInput" placeholder="Email" autocomplete="email" />
     <input type="password" id="passwordInput" placeholder="Password" autocomplete="off" />
-    <p class="login-error" id="loginError">Incorrect password</p>
+    <p class="login-error" id="loginError">Invalid credentials</p>
     <button class="btn-primary" id="loginBtn" style="width:100%">Sign In</button>
   </div>
 </div>
@@ -368,7 +410,11 @@
       <div class="form-row">
         <div class="form-group">
           <label>Cover Image URL</label>
-          <input type="text" id="postCover" placeholder="/assets/blog-images/..." />
+          <div class="dropzone" id="coverDropzone">
+            <input type="file" id="postCoverFile" accept="image/*" />
+            <div class="dz-content">Drag &amp; drop an image here, or click to browse</div>
+          </div>
+          <input type="text" id="postCover" placeholder="/assets/blog-images/... or uploaded image URL" />
         </div>
         <div class="form-group">
           <label>Date</label>
@@ -387,9 +433,20 @@
           </label>
         </div>
       </div>
+      <input type="hidden" id="postId" />
       <div class="form-group">
-        <label>Body <span class="hint">(markdown supported)</span></label>
-        <textarea class="body-field" id="postBody" placeholder="Write your post content in markdown..."></textarea>
+        <label>Body <span class="hint">(rich text supported)</span></label>
+        <div class="editor-toolbar" id="editorToolbar">
+          <button type="button" data-command="bold" title="Bold"><strong>B</strong></button>
+          <button type="button" data-command="italic" title="Italic"><em>I</em></button>
+          <button type="button" data-command="underline" title="Underline"><u>U</u></button>
+          <button type="button" data-command="insertOrderedList" title="Numbered list">1.</button>
+          <button type="button" data-command="insertUnorderedList" title="Bulleted list">•</button>
+          <button type="button" data-command="createLink" title="Insert link">Link</button>
+          <button type="button" data-command="formatBlock" data-value="h2" title="Heading">H2</button>
+        </div>
+        <div id="postBodyEditor" class="body-field editor-body" contenteditable="true" placeholder="Write your post content here..."></div>
+        <textarea id="postBody" class="hidden"></textarea>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn-secondary" id="cancelEditor">Cancel</button>
@@ -402,292 +459,6 @@
 
 <div class="toast" id="toast"></div>
 
-<script>
-const PASSWORD = 'bizcore2026';
-let posts = [];
-let searchQuery = '';
-const BLOG_FOLDER = 'content/blog/';
-
-function getSlug(title) {
-  return title.toLowerCase()
-    .replace(/[^\w\s-]/g, '')
-    .replace(/[\s_]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-    .substring(0, 80) || 'untitled';
-}
-
-function formatDate(iso) {
-  if (!iso) return '';
-  const d = new Date(iso);
-  return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-}
-
-function formatDateInput(iso) {
-  if (!iso) return '';
-  const d = new Date(iso);
-  const pad = n => String(n).padStart(2, '0');
-  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
-}
-
-function parseFrontmatter(text) {
-  const match = text.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
-  if (!match) return null;
-  const raw = match[1];
-  const body = match[2].trim();
-  const meta = {};
-  const lines = raw.split('\n');
-  let currentKey = null;
-  let currentVal = '';
-  for (const line of lines) {
-    const kv = line.match(/^(\w+):\s*(.*)/);
-    if (kv) {
-      if (currentKey) meta[currentKey] = parseValue(currentVal.trim());
-      currentKey = kv[1];
-      currentVal = kv[2];
-    } else if (currentKey) {
-      currentVal += '\n' + line;
-    }
-  }
-  if (currentKey) meta[currentKey] = parseValue(currentVal.trim());
-  return { meta, body };
-}
-
-function parseValue(val) {
-  if (val === 'true') return true;
-  if (val === 'false') return false;
-  if (val === '') return '';
-  if (val.startsWith('[') && val.endsWith(']')) {
-    try { return JSON.parse(val.replace(/'/g, '"')); } catch { return val; }
-  }
-  if (!isNaN(val) && val !== '') return Number(val);
-  return val;
-}
-
-function toFrontmatter(meta) {
-  let out = '---\n';
-  for (const [k, v] of Object.entries(meta)) {
-    if (v === true) out += `${k}: true\n`;
-    else if (v === false) out += `${k}: false\n`;
-    else if (Array.isArray(v)) out += `${k}: ${JSON.stringify(v)}\n`;
-    else if (typeof v === 'string' && (v.includes(':') || v.includes('#'))) out += `${k}: "${v}"\n`;
-    else out += `${k}: ${v}\n`;
-  }
-  out += '---\n';
-  return out;
-}
-
-async function loadPosts() {
-  try {
-    const resp = await fetch('/content/blog/');
-    if (!resp.ok) { posts = []; renderTable(); return; }
-    const html = await resp.text();
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, 'text/html');
-    const links = [...doc.querySelectorAll('a')];
-    const mdFiles = links.map(a => a.textContent).filter(f => f.endsWith('.md'));
-    posts = [];
-    for (const file of mdFiles) {
-      try {
-        const fileResp = await fetch(`${BLOG_FOLDER}${file}`);
-        if (!fileResp.ok) continue;
-        const text = await fileResp.text();
-        const parsed = parseFrontmatter(text);
-        if (!parsed) continue;
-        posts.push({ file, ...parsed.meta, body: parsed.body });
-      } catch {}
-    }
-  } catch {
-    posts = [];
-  }
-  renderTable();
-}
-
-async function savePostToFile(meta, body, originalFile) {
-  const frontmatter = toFrontmatter(meta);
-  const content = frontmatter + body + '\n';
-  const slug = meta.slug || getSlug(meta.title);
-  const filename = `${slug}.md`;
-  const blob = new Blob([content], { type: 'text/markdown' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-  if (originalFile && originalFile !== filename) {
-    const msg = `Original file "${originalFile}" needs to be deleted manually. New file "${filename}" has been downloaded.`;
-    showToast(msg, 'success');
-  } else {
-    showToast(`"${filename}" downloaded. Place it in ${BLOG_FOLDER} and refresh.`, 'success');
-  }
-  closeEditor();
-  setTimeout(loadPosts, 1000);
-}
-
-function renderTable() {
-  const q = searchQuery.toLowerCase();
-  const filtered = posts.filter(p => !q || (p.title && p.title.toLowerCase().includes(q)));
-  document.getElementById('statTotal').textContent = posts.length;
-  document.getElementById('statFeatured').textContent = posts.filter(p => p.featured === true).length;
-  document.getElementById('statDrafts').textContent = posts.filter(p => p.featured !== true).length;
-  const tbody = document.getElementById('postsBody');
-  if (!filtered.length) {
-    tbody.innerHTML = `<tr><td colspan="5" class="empty-state">${posts.length === 0 ? 'No posts yet. Create your first post!' : 'No posts match your search.'}</td></tr>`;
-    return;
-  }
-  tbody.innerHTML = filtered.map((p, i) => `
-    <tr>
-      <td><strong style="font-family:'Outfit',sans-serif">${escHtml(p.title || 'Untitled')}</strong></td>
-      <td><span class="badge badge-no">${escHtml(p.category || 'Uncategorized')}</span></td>
-      <td style="color:var(--muted);font-size:13px">${p.date ? formatDate(p.date) : '—'}</td>
-      <td><span class="badge ${p.featured ? 'badge-yes' : 'badge-no'}">${p.featured ? 'Yes' : 'No'}</span></td>
-      <td class="actions">
-        <button class="edit-btn" data-file="${p.file}">Edit</button>
-        <button class="del-btn" data-file="${p.file}">Delete</button>
-      </td>
-    </tr>
-  `).join('');
-}
-
-function escHtml(s) {
-  const d = document.createElement('div');
-  d.textContent = s;
-  return d.innerHTML;
-}
-
-function showToast(msg, type = 'success') {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'toast ' + type + ' show';
-  clearTimeout(t._hide);
-  t._hide = setTimeout(() => t.classList.remove('show'), 4000);
-}
-
-// Login
-document.getElementById('loginBtn').addEventListener('click', () => {
-  const val = document.getElementById('passwordInput').value;
-  if (val === PASSWORD) {
-    sessionStorage.setItem('bizcore_admin', 'true');
-    document.getElementById('loginScreen').style.display = 'none';
-    document.getElementById('dashboard').style.display = 'block';
-    loadPosts();
-  } else {
-    document.getElementById('loginError').style.display = 'block';
-  }
-});
-document.getElementById('passwordInput').addEventListener('keydown', e => {
-  if (e.key === 'Enter') document.getElementById('loginBtn').click();
-});
-
-// Logout
-document.getElementById('logoutBtn').addEventListener('click', () => {
-  sessionStorage.removeItem('bizcore_admin');
-  document.getElementById('dashboard').style.display = 'none';
-  document.getElementById('loginScreen').style.display = 'flex';
-  document.getElementById('passwordInput').value = '';
-  document.getElementById('loginError').style.display = 'none';
-});
-
-// Search
-document.getElementById('searchInput').addEventListener('input', e => {
-  searchQuery = e.target.value;
-  renderTable();
-});
-
-// Check session
-if (sessionStorage.getItem('bizcore_admin') === 'true') {
-  document.getElementById('loginScreen').style.display = 'none';
-  document.getElementById('dashboard').style.display = 'block';
-  loadPosts();
-}
-
-function openEditor(post = null) {
-  document.getElementById('editorTitle').textContent = post ? 'Edit Post' : 'New Post';
-  document.getElementById('editOriginalFile').value = post ? post.file : '';
-  document.getElementById('postTitle').value = post ? post.title || '' : '';
-  document.getElementById('postSlug').value = post ? post.slug || '' : '';
-  document.getElementById('postExcerpt').value = post ? post.excerpt || '' : '';
-  document.getElementById('postCategory').value = post ? post.category || '' : '';
-  document.getElementById('postCover').value = post ? post.cover_image || '' : '';
-  document.getElementById('postDate').value = post ? formatDateInput(post.date) : '';
-  document.getElementById('postAuthor').value = post ? post.author || 'BIZCORE Team' : 'BIZCORE Team';
-  document.getElementById('postFeatured').checked = post ? post.featured === true : false;
-  document.getElementById('postTags').value = post && post.tags ? (Array.isArray(post.tags) ? post.tags.join(', ') : post.tags) : '';
-  document.getElementById('postBody').value = post ? post.body || '' : '';
-  const deleteBtn = document.getElementById('deletePostBtn');
-  if (post) { deleteBtn.classList.remove('hidden'); deleteBtn.dataset.file = post.file; }
-  else deleteBtn.classList.add('hidden');
-  document.getElementById('editorOverlay').classList.add('active');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeEditor() {
-  document.getElementById('editorOverlay').classList.remove('active');
-  document.body.style.overflow = '';
-}
-
-document.getElementById('newPostBtn').addEventListener('click', () => openEditor(null));
-document.getElementById('closeEditor').addEventListener('click', closeEditor);
-document.getElementById('cancelEditor').addEventListener('click', closeEditor);
-
-// Auto-slug from title
-document.getElementById('postTitle').addEventListener('input', function() {
-  const slugField = document.getElementById('postSlug');
-  if (!slugField.dataset.manual) {
-    slugField.value = getSlug(this.value);
-  }
-});
-document.getElementById('postSlug').addEventListener('input', function() {
-  this.dataset.manual = this.value.length > 0;
-});
-
-// Post form save
-document.getElementById('postForm').addEventListener('submit', e => {
-  e.preventDefault();
-  const meta = {
-    title: document.getElementById('postTitle').value.trim(),
-    slug: document.getElementById('postSlug').value.trim() || getSlug(document.getElementById('postTitle').value),
-    date: document.getElementById('postDate').value ? new Date(document.getElementById('postDate').value).toISOString() : new Date().toISOString(),
-    author: document.getElementById('postAuthor').value.trim() || 'BIZCORE Team',
-    excerpt: document.getElementById('postExcerpt').value.trim(),
-    category: document.getElementById('postCategory').value,
-    cover_image: document.getElementById('postCover').value.trim() || undefined,
-    tags: document.getElementById('postTags').value.trim() ? document.getElementById('postTags').value.split(/\s*,\s*/).map(t => t.trim()).filter(Boolean) : undefined,
-    featured: document.getElementById('postFeatured').checked
-  };
-  const body = document.getElementById('postBody').value;
-  if (!meta.title) { showToast('Title is required', 'error'); return; }
-  if (!meta.excerpt) { showToast('Excerpt is required', 'error'); return; }
-  if (!meta.category) { showToast('Category is required', 'error'); return; }
-  const originalFile = document.getElementById('editOriginalFile').value;
-  savePostToFile(meta, body, originalFile);
-});
-
-// Delete post
-document.getElementById('deletePostBtn').addEventListener('click', function() {
-  const file = this.dataset.file;
-  if (!file) return;
-  if (confirm(`Delete "${file}"? This cannot be undone via this admin.`)) {
-    showToast(`"${file}" needs to be deleted manually from ${BLOG_FOLDER}.`, 'success');
-    closeEditor();
-  }
-});
-
-// Table action delegation
-document.getElementById('postsBody').addEventListener('click', e => {
-  const btn = e.target.closest('button');
-  if (!btn) return;
-  const file = btn.dataset.file;
-  const post = posts.find(p => p.file === file);
-  if (btn.classList.contains('edit-btn') && post) openEditor(post);
-  if (btn.classList.contains('del-btn') && post) {
-    if (confirm(`Delete "${post.title || file}"? Delete the file manually from ${BLOG_FOLDER}.`)) {
-      showToast(`Delete "${file}" manually from ${BLOG_FOLDER} and refresh.`, 'success');
-    }
-  }
-});
-</script>
+<script type="module" src="./auth.js"></script>
 </body>
 </html>
